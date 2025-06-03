@@ -1,0 +1,346 @@
+/* eslint-disable prettier/prettier */
+import React, { useState } from "react";
+// import { useLocation } from "react-router-dom";
+import { useAppContext } from "../../Context/AppContextReducer";
+import CheckCard from "../../Components/CheckOut/CheckCard";
+import "./bt1.css";
+import emailjs from "emailjs-com";
+
+const CheckOuts = () => {
+  //   const location = useLocation();
+  //   const total = location.state?.total || "0.00";
+  const [promoCode, setPromoCode] = useState("");
+  const isValidCode = promoCode.trim().toLowerCase() === "ms21";
+  const { state } = useAppContext();
+  const [formData, setFormData] = useState({
+    email: "",
+    country: "",
+    state: "",
+    firstName: "",
+    lastName: "",
+    address: "",
+    apartment: "",
+    postalCode: "",
+    city: "",
+  });
+  const payNow = (e) => {
+    e.preventDefault();
+    console.log("checkout");
+    emailjs.send(
+      "service_t7zl5xh",
+      "template_dnxwjh9",
+      {
+        message: `
+          Country: ${formData.country}
+          State: ${formData.state}
+          Address: ${formData.address}, ${formData.apartment}
+          City: ${formData.city}, Postal Code: ${formData.postalCode}
+          Cart: ${cartItems
+            .map((item) => `${item.title} x${item.quantity}`)
+            .join(", ")}
+          Total: $${totalAmount}
+        `,
+      },
+      "LXSkZ2wdpNYn9gY7q"
+    );
+  };
+
+  const cartItems = state.cartItems;
+
+  const totalAmount = cartItems
+    .reduce(
+      (acc, item) =>
+        acc + parseFloat(item.price.replace("$", "")) * item.quantity,
+      0
+    )
+    .toFixed(2);
+
+  // ✅ Stripe Redirect Payment ფუნქცია
+  const handleStripeCheckout = async () => {
+    const response = await fetch(
+      "http://localhost:3001/api/payments/create-checkout-session",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cartItems }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      alert("შეცდომა გადახდაში");
+    }
+    //emailjs
+  };
+
+  return (
+    <div className=" flex flex-row relative gap-40 justify-center  text-white py-10 ">
+      <form
+        className="flex flex-col gap-4  rounded-lg w-[500px] "
+        onSubmit={payNow}
+      >
+        {/* Payment Info */}
+        <div>
+          <h2 className="text-2xl mb-4 text-zinc-300">Payment Information</h2>
+          <div className="flex flex-col gap-4">
+            <label htmlFor="text" className="text-sm text-gray-400">
+              Cardholder Email
+            </label>
+            <input
+              name="email"
+              value={formData.email}
+              onChange={(e) =>
+                setFormData({ ...formData, [e.target.name]: e.target.value })
+              }
+              type="email"
+              placeholder="example@email.com"
+              className="w-full bg-[#1b1b1b] p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
+            />
+          </div>
+        </div>
+
+        {/* Shipping Info */}
+        <div>
+          <h2 className="text-2xl mb-4 text-zinc-300">Shipping Address</h2>
+          <div className="flex flex-col gap-4 w-full">
+            <div>
+              <label htmlFor="text" className="text-sm text-gray-400">
+                Country/Region
+              </label>
+              <input
+                name="country"
+                value={formData.country}
+                onChange={(e) =>
+                  setFormData({ ...formData, [e.target.name]: e.target.value })
+                }
+                type="text"
+                placeholder="country/region"
+                className="w-full bg-[#1b1b1b] p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
+              />
+            </div>
+            <div>
+              <label htmlFor="text" className="text-sm text-gray-400">
+                State
+              </label>
+              <input
+                name="state"
+                value={formData.state}
+                onChange={(e) =>
+                  setFormData({ ...formData, [e.target.name]: e.target.value })
+                }
+                type="text"
+                placeholder="state"
+                className="w-full bg-[#1b1b1b] p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
+              />
+            </div>
+            <div className="flex flex-row gap-2">
+              <div>
+                <label htmlFor="text" className="text-sm text-gray-400">
+                  First Name
+                </label>
+                <input
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      [e.target.name]: e.target.value,
+                    })
+                  }
+                  type="text"
+                  placeholder="John Doe"
+                  className="w-full bg-[#1b1b1b] p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
+                />
+              </div>
+              <div>
+                <label htmlFor="text" className="text-sm text-gray-400">
+                  Last Name
+                </label>
+                <input
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      [e.target.name]: e.target.value,
+                    })
+                  }
+                  type="text"
+                  placeholder="John Doe"
+                  className="w-full bg-[#1b1b1b] p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="text" className="text-sm text-gray-400">
+                Address
+              </label>
+              <input
+                name="address"
+                value={formData.address}
+                onChange={(e) =>
+                  setFormData({ ...formData, [e.target.name]: e.target.value })
+                }
+                type="text"
+                placeholder="Address"
+                className="w-full bg-[#1b1b1b] p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
+              />
+            </div>
+            <div>
+              <label htmlFor="text" className="text-sm text-gray-400">
+                Apartment
+              </label>
+              <input
+                name="apartment"
+                value={formData.apartment}
+                onChange={(e) =>
+                  setFormData({ ...formData, [e.target.name]: e.target.value })
+                }
+                type="text"
+                placeholder="Apartment, suite, etc.(optional)"
+                className="w-full bg-[#1b1b1b] p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
+              />
+            </div>
+            <div className="flex flex-row gap-2">
+              <div>
+                <label htmlFor="text" className="text-sm text-gray-400">
+                  Postal Code
+                </label>
+                <input
+                  name="postalCode"
+                  value={formData.postalCode}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      [e.target.name]: e.target.value,
+                    })
+                  }
+                  type="text"
+                  placeholder="Postal Code"
+                  className="w-full bg-[#1b1b1b] p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
+                />
+              </div>
+              <div>
+                <label htmlFor="text" className="text-sm text-gray-400">
+                  City
+                </label>
+                <input
+                  name="city"
+                  value={formData.city}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      [e.target.name]: e.target.value,
+                    })
+                  }
+                  type="text"
+                  placeholder="New York"
+                  className="w-full bg-[#1b1b1b] p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button className="BTN1" type="submit" onClick={handleStripeCheckout}>
+          Pay Now
+          {[1, 2, 3, 4, 5, 6].map((num) => (
+            <div key={num} className={`star-${num}`}>
+              <svg
+                xmlnsXlink="http://www.w3.org/1999/xlink"
+                viewBox="0 0 784.11 815.53"
+                style={{
+                  shapeRendering: "geometricPrecision",
+                  textRendering: "geometricPrecision",
+                  imageRendering: "optimizeQuality",
+                  fillRule: "evenodd",
+                  clipRule: "evenodd",
+                }}
+                version="1.1"
+                xmlSpace="preserve"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g id="Layer_x0020_1">
+                  <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                  <path
+                    d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78
+                  207.96,29.37 371.12,197.68 392.05,407.74
+                  20.93,-210.06 184.09,-378.37 392.05,-407.74
+                  -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                    className="fil0"
+                  ></path>
+                </g>
+              </svg>
+            </div>
+          ))}
+        </button>
+      </form>
+      <div className="  flex flex-col gap-8  rounded-2xl shadow-xl p-8 ">
+        <div
+          className={`flex flex-col gap-5 overflow-y-auto ${
+            state.cartItems.length > 3 ? "max-h-[300px]" : ""
+          }`}
+        >
+          {state.cartItems.map((item) => (
+            <CheckCard key={item.id} props={item} />
+          ))}
+        </div>
+        <div className="flex flex-row gap-5">
+          <input
+            type="text"
+            placeholder="Promo Code"
+            className="w-full bg-[#1b1b1b] p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
+            value={promoCode}
+            onChange={(e) => setPromoCode(e.target.value)}
+          />
+          <button
+            className={`px-5 py-2 rounded-lg font-semibold transition duration-300 ${
+              isValidCode
+                ? "bg-green-600 text-white"
+                : "bg-gray-700 text-gray-300"
+            }`}
+          >
+            APPLY
+          </button>
+        </div>
+        <div className="flex justify-between  text-zinc-200">
+          <h1 className="text-medium">Subtotal ·</h1>
+          <h1 className="text-medium">
+            {state.cartItems.reduce((acc, item) => acc + item.quantity, 0)}{" "}
+            items
+          </h1>
+        </div>
+        <div className="flex justify-between text-white">
+          <h1 className="text-medium">Total: </h1>
+          <h1 className="text-medium">{totalAmount}</h1>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CheckOuts;
+// import { useAppContext } from "../../Context/AppContextReducer";
+
+// const CheckOuts = () => {
+
+//   return (
+//     <div className="checkout-container">
+//       <h1 className="text-lg">სულ გადასახდელი: ${totalAmount}</h1>
+
+//       {/* ✅ Stripe გადახდის ღილაკი */}
+//       <button
+//         onClick={handleStripeCheckout}
+//         className="bg-blue-600 text-white px-4 py-2 rounded mt-4"
+//       >
+//         გადაიხადე Stripe-ით
+//       </button>
+//     </div>
+//   );
+// };
+
+// export default CheckOuts;

@@ -1,0 +1,178 @@
+/* From Uiverse.io by Cksunandh */
+.tv-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tv-screen {
+  position: relative;
+  width: 700px;
+  height: 400px;
+  background: black;
+  border: 10px solid #333;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8),
+    inset 0 0 50px rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+.static {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    #000,
+    #000 1px,
+    #111 1px,
+    #fff 1px,
+    #333 2px
+  );
+  animation: flicker 0.1s steps(20) infinite;
+  z-index: 1;
+}
+
+.error-text {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: red;
+  font-size: 45px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 5px black;
+  z-index: 2;
+  animation: glitch 0.5s infinite;
+}
+.error-text2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: red;
+  font-size: 45px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 5px black;
+  z-index: 2;
+  animation: glitch 0.5s infinite;
+}
+.tv-stand {
+  width: 150px;
+  height: 10px;
+  background: #333;
+  margin-top: 10px;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.7);
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 0.8;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1.01);
+  }
+  100% {
+    opacity: 0.7;
+    transform: scaleY(0.99);
+  }
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(-50%, -50%) skewX(5deg);
+    opacity: 0.9;
+  }
+  25% {
+    transform: translate(-50%, -50%) skewX(-5deg);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-50%, -50%) skewX(0deg);
+    opacity: 1;
+  }
+  75% {
+    transform: translate(-50%, -50%) skewX(-5deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) skewX(5deg);
+    opacity: 0.9;
+  }
+}
+
+/* From Uiverse.io by cssbuttons-io */
+/* From Uiverse.io by cssbuttons-io */
+.buttonerror {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  height: auto;
+  color: red;
+  font-size: 45px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 5px black;
+  z-index: 2;
+  animation: glitch 0.5s infinite;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.buttonerror .circle {
+  width: 3rem;
+  height: 3rem;
+  background: darkred;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.buttonerror .circle .icon.arrow {
+  width: 1.125rem;
+  height: 0.125rem;
+  background: none;
+  position: relative;
+}
+
+.buttonerror .circle .icon.arrow::before {
+  content: "";
+  position: absolute;
+  top: -0.3rem;
+  right: 0.0625rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-top: 0.125rem solid #fff;
+  border-right: 0.125rem solid #fff;
+  transform: rotate(45deg);
+}
+
+.buttonerror .button-text {
+  text-transform: uppercase;
+  color: red;
+  font-size: 2rem;
+}
+
+/* hover effect */
+.buttonerror:hover .circle {
+  background: red;
+}
+
+.buttonerror:hover .button-text {
+  color: white;
+}
