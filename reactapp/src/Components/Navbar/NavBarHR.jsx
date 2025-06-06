@@ -37,6 +37,8 @@ const NavBarHR = () => {
   const { state, dispatch } = useAppContext();
   const smMenu = [
     { title: "Home", path: routes.home },
+    { title: "AboutUs", path: routes.aboutus },
+
     // { title: "Tshirts", path: routes.tshirt },
     // { title: "Hood", path: routes.hood },
     // { title: "Case`s", path: routes.case },

@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { routes } from "../Constants/ConstRouts/routes";
-import AuthGuard from "../Guard/AuthGuard";
+// import AuthGuard from "../Guard/AuthGuard";
+import AboutUs from "../Pages/About/AboutUs";
 import CancelCheck from "../Pages/Checkout/CancelCheck";
 import CheckOuts from "../Pages/Checkout/CheckOuts";
 import SuccessCheck from "../Pages/Checkout/SuccessCheck";
@@ -14,7 +15,8 @@ import HoodPR from "../Pages/Products/HoodPR";
 import TshirtPR from "../Pages/Products/TshirtPR";
 
 export const routesConfig = [
-  { path: routes.home, Component: Home, Guard: AuthGuard },
+  { path: routes.home, Component: Home },
+  { path: routes.aboutus, Component: AboutUs },
   // PAGES
   { path: routes.case, Component: CasePR },
   { path: routes.tshirt, Component: TshirtPR },

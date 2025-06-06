@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 export const routes = {
   home: "/",
+  aboutus: "/aboutus",
   // tshirt: "/tshirt",
   // case: "/case",
   // hood: "/hood",

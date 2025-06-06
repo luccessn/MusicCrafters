@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Design = require("../Models/Design");
-const printfulAPI = require("../utils/printful");
-
+const { printfulAPI } = require("../utils/printful");
 // 📌 ROUTE: Printful-დან მონაცემების წამოღება და ბაზაში შენახვა
 router.get("/sync", async (req, res) => {
   try {
@@ -93,7 +92,7 @@ router.get("/sync", async (req, res) => {
           printfulProductId: productId.toString(),
           images,
           // preview,
-          type: "tshirt",
+          // type: "tshirt",
           variants: preparedVariants,
           price,
           minPrice,

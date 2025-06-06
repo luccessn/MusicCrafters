@@ -21,7 +21,7 @@ const designSchema = new mongoose.Schema({
       preview_url: String,
     },
   ],
-  type: String,
+  // type: String,
   price: String,
   minPrice: String,
   maxPrice: String,

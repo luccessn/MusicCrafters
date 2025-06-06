@@ -3,6 +3,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
+const cron = require("node-cron");
+const axios = require("axios");
+
 const Design = require("./Models/Design");
 const printfulAPI = require("./utils/printful");
 
@@ -36,6 +39,21 @@ app.use("/api/paypal", paypalRoutes);
 //
 const printfulRoutes = require("./routes/printfulRoutes");
 app.use("/api/printful", printfulRoutes);
+//
+//ყოველ 5 წუთში არესტარტებს
+cron.schedule("*/5 * * * *", async () => {
+  console.log("🔁 Printful სინქრონიზაცია დაიწყო...");
+  try {
+    const response = await axios.get("http://localhost:3001/api/printful/sync");
+    console.log(
+      "✅ Printful სინქრონიზაცია წარმატებულია:",
+      response.data.message
+    );
+  } catch (error) {
+    console.error("❌ სინქრონიზაციის შეცდომა:", error.message);
+  }
+});
+
 //
 const stockRoutes = require("./routes/stockRoutes");
 app.use("/api/stock", stockRoutes);

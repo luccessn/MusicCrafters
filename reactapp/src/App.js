@@ -9,15 +9,18 @@ import { StarsBackground } from "./Components/Ui/stars/stars-background";
 
 function App() {
   return (
-    <div className="  relative min-h-screen flex flex-col bg-black ">
+    <div className="relative min-h-screen flex flex-col bg-black overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 z-0">
+        <ShootingStars />
+        <StarsBackground />
+      </div>
+
+      {/* Foreground */}
       <NavBarHR />
       <div className="z-10 relative">
-        {/* <Navbar> */}
         <AppRoutes />
-        {/* </Navbar> */}
       </div>
-      <ShootingStars className="min-h-screen" />
-      <StarsBackground className="min-h-screen" />
     </div>
   );
 }

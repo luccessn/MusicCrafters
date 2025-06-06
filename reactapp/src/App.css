@@ -19,7 +19,13 @@
   height: 100%;
   object-fit: cover;
 }
+.swiper-button-next {
+  right: -60px !important; /* ან უფრო მეტი დაშორება */
+}
 
+.swiper-button-prev {
+  left: -60px !important;
+}
 .rs-drawer-header {
   background-color: #4a2568 !important; /* Tailwind bg-purple-800 */
 }
@@ -106,3 +112,4 @@ input[type="checkbox"]#cbx {
     transform: scale(1, 1);
   }
 }
+/* /./ */
