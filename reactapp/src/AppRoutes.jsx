@@ -11,26 +11,23 @@ const AppRoutes = () => {
       <Route path="/signin" Component={SignIn} />
       <Route path="/signup" Component={SignUp} />
       <Route path="/test" Component={testpage} /> */}
-      {routesConfig.map((route) => {
-        if (route.Guard) {
-          return (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={
-                <route.Guard>
-                  <route.Component />
-                </route.Guard>
-              }
-            />
-          );
-        }
+      {routesConfig.map((route, index) => {
+        const key = route.path || `route-${index}`;
+        // if (route.Guard) {
+        //   return (
+        //     <Route
+        //       key={route.path}
+        //       path={route.path}
+        //       element={
+        //         <route.Guard>
+        //           <route.Component />
+        //         </route.Guard>
+        //       }
+        //     />
+        //   );
+        // }
         return (
-          <Route
-            key={route.path}
-            path={route.path}
-            Component={route.Component}
-          />
+          <Route key={key} path={route.path} Component={route.Component} />
         );
       })}
     </Routes>

@@ -4,8 +4,12 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ErrorLoader from "../Loaderings/ErrorLoader";
 
 const MainGridProduct = ({ props }) => {
+  // თუ მაგალითად იმიჯი არ არსებობს, ან სხვა პარამეტრი არის პრობლემა, ეს იქნება error
+  const hasError = !props?.price || !props?.name; // errors Types
+
   const [image, setImage] = useState(props.images?.img1);
   const handleMouseEnter = () => {
     if (props.images?.img2) {
@@ -33,12 +37,15 @@ const MainGridProduct = ({ props }) => {
     // }
     window.scrollTo(0, 0);
   };
+  if (hasError) {
+    return <ErrorLoader error={"Product data is missing or corrupted"} />;
+  }
   return (
     <>
       {props.images?.img1 ? (
         <div
           onClick={goDTL}
-          className="w-[380px] h-[500px] flex flex-col rounded-xl relative shadow hover:shadow-md transition"
+          className=" w-[380px] h-[450px] sm:w-[320px] sm:h-[400px]  xxl:w-[340px] xxl:h-[400px] xxxl:w-[380px] xxxl:h-[500px] flex flex-col rounded-xl relative shadow hover:shadow-md transition"
         >
           <div className="w-full h-[380px] overflow-hidden rounded-sm">
             <img

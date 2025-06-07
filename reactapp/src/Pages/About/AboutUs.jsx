@@ -4,7 +4,9 @@
 import React from "react";
 import CardSwap, { Card } from "../../Components/Ui/CardSwap";
 import { motion } from "framer-motion";
-
+import MediaIcon from "@rsuite/icons/Media";
+import ConversionIcon from "@rsuite/icons/Conversion";
+import SendIcon from "@rsuite/icons/Send";
 // Import Swiper styles
 
 const AboutUs = () => {
@@ -33,23 +35,40 @@ const AboutUs = () => {
             pauseOnHover={false}
           >
             <Card>
-              <h3>Card 1</h3>
+              <div className="flex flex-row gap-4 pl-4 p-2">
+                <MediaIcon className=" relative top-2" />
+                <h3 className="text-medium font-serif">Social Media</h3>
+              </div>
 
-              <img src="https://i.postimg.cc/1tT01dBC/musicig.png" alt="" />
+              <div className="border-t-1 border-white">
+                <img src="https://i.postimg.cc/1tT01dBC/musicig.png" alt="" />
+              </div>
             </Card>
 
             <Card>
-              <h3>Card 2</h3>
-              <img
-                src="https://www.corpnet.com/wp-content/uploads/2019/12/Dropship-Concept-Illustration.jpg"
-                alt=""
-              />
+              <div className="flex flex-row gap-4 pl-4 p-2">
+                <SendIcon className=" relative top-2" />
+                <h3 className="text-medium font-serif">Delivery</h3>
+              </div>
+              <div className="border-t-1 border-white">
+                <img
+                  src="https://www.corpnet.com/wp-content/uploads/2019/12/Dropship-Concept-Illustration.jpg"
+                  alt=""
+                />
+              </div>
             </Card>
 
             <Card>
-              <h3>Card 3</h3>
-
-              <p>Your content here</p>
+              <div className="flex flex-row gap-4 pl-4 p-2">
+                <ConversionIcon className=" relative top-2" />
+                <h3 className="text-medium font-serif">Paypal Payment</h3>
+              </div>
+              <div className="border-t-1 border-white">
+                <img
+                  src="https://appsero.com/app/uploads/2021/03/What-Does-Pending-Mean-on-PayPal-payment-gateway.png"
+                  alt=""
+                />
+              </div>
             </Card>
           </CardSwap>
         </div>

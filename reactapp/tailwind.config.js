@@ -8,6 +8,18 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    screens: {
+      ssm: "480px",
+      sfm: "500px",
+      smm: "650px",
+      sm: "740px",
+      md: "800px",
+      mmd: "910px",
+      lg: "1024px",
+      xl: "1280px",
+      xxl: "1555px",
+      xxxl: "1700px",
+    },
   },
   plugins: [heroui()],
 };

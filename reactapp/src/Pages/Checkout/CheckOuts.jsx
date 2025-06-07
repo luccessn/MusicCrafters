@@ -1,4 +1,7 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable prettier/prettier */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
@@ -8,15 +11,28 @@ import CheckCard from "../../Components/CheckOut/CheckCard";
 import "./bt1.css";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { clearCart } from "../../Context/AppActionsCreator";
-import emailjs from "emailjs-com";
 //phone input
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+///MODAL
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+} from "@heroui/react";
 const CheckOuts = () => {
   const [promoCode, setPromoCode] = useState("");
-  const isValidCode = promoCode.trim().toLowerCase() === "ms21";
+  const [isPromoApplied, setIsPromoApplied] = useState(false);
+  const isValidCode = ["ms21", "ms22"].includes(promoCode.trim().toLowerCase());
   const { state, dispatch } = useAppContext();
+  //MODAL
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [isChecked, setIsChecked] = useState(false);
+  //
   const [Data, setData] = useState({
     email: "",
     country: "",
@@ -29,16 +45,7 @@ const CheckOuts = () => {
     city: "",
     phone: "",
   });
-  // const handleCreateOrder = async () => {
-  //   const res = await fetch(
-  //     "http://localhost:3001/api/paypal/create-paypal-order",
-  //     {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({ cartItems }),
-  //     }
-  //   );
-  // };
+
   const ChangeInput = (e) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
@@ -52,19 +59,13 @@ const CheckOuts = () => {
     0
   );
 
-  // const totalAmount = cartItems
-  //   .reduce(
-  //     (acc, item) =>
-  //       acc + parseFloat(item.price.replace("$", "")) * item.quantity,
-  //     0
-  //   )
-  //   .toFixed(2);
-  const totalAmount = isValidCode
+  const totalAmount = isPromoApplied
     ? (nedliTotal * 0.8).toFixed(2)
     : nedliTotal.toFixed(2);
-  const isFormValid = Object.entries(Data).every(
-    ([key, value]) => key === "apartment" || value.trim() !== ""
-  );
+  const isFormValid =
+    Object.entries(Data).every(
+      ([key, value]) => key === "apartment" || value.trim() !== ""
+    ) && isChecked;
 
   return (
     <div className="flex flex-row relative gap-40 justify-center text-white py-10">
@@ -226,6 +227,7 @@ const CheckOuts = () => {
                 }}
               />
             </div>
+
             <div className="cntr flex flex-row gap-5">
               <input
                 type="checkbox"
@@ -234,8 +236,44 @@ const CheckOuts = () => {
                 onChange={(e) => setIsChecked(e.target.checked)}
               />
               <label htmlFor="cbx" className="cbx"></label>
-              <p className="font-mono relative top-1"> Aggree Our Terminates</p>
+              <div className="flex flex-row gap-2 font-mono text-medium">
+                <p className="">Aggree Our</p>
+                <p
+                  onClick={onOpen}
+                  className=" relative -top-2 text-blue-500 underline cursor-pointer"
+                >
+                  Terminates
+                </p>
+              </div>
             </div>
+
+            {/* Modal */}
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+              <ModalContent>
+                {(onClose) => (
+                  <>
+                    <ModalHeader>Our Terms and Conditions</ModalHeader>
+                    <ModalBody>
+                      <p>
+                        Please be informed that all information you provide is
+                        stored in our database to prevent any unforeseen issues.
+                        Accordingly, this information will be deleted once you
+                        receive your order/package. <br></br> <br></br> Please
+                        note that sold products are non-returnable and
+                        non-exchangeable. We are responsible for our quality
+                        standards. If any unexpected issues arise, we will work
+                        through this matter with our team alongside you.
+                      </p>
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button color="primary" onPress={onClose}>
+                        Accept
+                      </Button>
+                    </ModalFooter>
+                  </>
+                )}
+              </ModalContent>
+            </Modal>
           </div>
         </div>
 
@@ -268,7 +306,10 @@ const CheckOuts = () => {
                     {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({ cartItems }),
+                      body: JSON.stringify({
+                        cartItems,
+                        totalAmount: parseFloat(totalAmount), // აქ ვაგზავნით დაკლებულ ფასს
+                      }),
                     }
                   );
 
@@ -325,17 +366,6 @@ const CheckOuts = () => {
                   alert("An error occurred during order confirmation.");
                 }
               }}
-              // onApprove={(data, actions) => {
-
-              //   cartItems;
-              //   return actions.order.capture().then((details) => {
-              //     alert(
-              //       `Thank you ${details.payer.name.given_name}, payment successful!`
-              //     );
-              //     window.location.href = "/success";
-              //     dispatch(clearCart());
-              //   });
-              // }}
               onCancel={() => {
                 window.location.href = "/cancel";
               }}
@@ -372,10 +402,12 @@ const CheckOuts = () => {
           <button
             type="button"
             onClick={() => {
-              if (!isValidCode) {
-                alert("Invalid Promo Code");
-              } else {
+              if (isValidCode) {
+                setIsPromoApplied(true);
                 alert("Promo Applied");
+              } else {
+                setIsPromoApplied(false);
+                alert("Invalid Promo Code");
               }
             }}
             className={`px-5 py-2 rounded-lg font-semibold transition duration-300 ${

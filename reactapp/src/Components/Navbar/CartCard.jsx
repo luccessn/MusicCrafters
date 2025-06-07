@@ -6,11 +6,11 @@ import { removeFromCart } from "../../Context/AppActionsCreator";
 import { Trash2 } from "lucide-react"; // აიკონები
 import { UPDATE_CART_ITEM_QUANTITY } from "../../Context/AppActions";
 const CartCard = ({ props }) => {
+  const { dispatch } = useAppContext();
   console.log(props);
   const handleRemove = () => {
     dispatch(removeFromCart(props.id));
   };
-  const { dispatch } = useAppContext();
   const increment = () => {
     dispatch({
       type: UPDATE_CART_ITEM_QUANTITY,
@@ -32,7 +32,7 @@ const CartCard = ({ props }) => {
       });
     }
   };
-
+  console.log("quantity:", props.quantity, "stock:", props.stock);
   return (
     <div className="flex flex-row items-center  justify-between py-4 border-b border-gray-200 font-mono">
       <img
@@ -61,7 +61,12 @@ const CartCard = ({ props }) => {
             <h1 className="text-white text-xl">{props.quantity}</h1>
             <button
               onClick={increment}
-              className="px-3 py-1 rounded text-white"
+              className={`px-3 py-1 rounded ${
+                props.quantity >= props.stock
+                  ? "text-gray-600 cursor-not-allowed"
+                  : "text-white"
+              }`}
+              disabled={props.quantity >= props.stock}
             >
               +
             </button>
@@ -79,7 +84,9 @@ const CartCard = ({ props }) => {
         <p className="font-semibold text-white text-xl">
           {/* ${(props.price * props.quantity).toFixed(2)} */}
           {props?.price
-            ? `${props.quantity * parseFloat(props.price.replace("$", ""))} $`
+            ? `${(
+                props.quantity * parseFloat(props.price.replace("$", ""))
+              ).toFixed(2)} $`
             : "Loading..."}
         </p>
       </div>

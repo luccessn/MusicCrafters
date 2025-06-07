@@ -3,6 +3,7 @@ import React from "react";
 import useFetchData from "../../HOC/useFetchData";
 import { useParams } from "react-router-dom";
 import MainDTLCards from "../../Components/DetailsCMP/MainDTLCards";
+import Placeholder from "../../Components/Loaderings/Placeholder";
 const DesignImagesDTL = () => {
   const { prID } = useParams();
 
@@ -16,7 +17,7 @@ const DesignImagesDTL = () => {
   return (
     <>
       <div>
-        {loading && <h1>Loading .. </h1>}
+        {loading && <Placeholder />}
         {/* <MainDTCards props={data} /> */}
         <MainDTLCards data={data} />
       </div>

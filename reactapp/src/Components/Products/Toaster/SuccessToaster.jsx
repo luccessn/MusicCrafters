@@ -13,9 +13,9 @@ const SuccessToaster = ({ visible }) => {
       `}
     >
       <div className="flex flex-col w-60 sm:w-72 text-[10px] sm:text-xs">
-        <div className="succsess-alert flex items-center justify-between w-full h-12 sm:h-14 rounded-lg bg-[#232531] px-[10px] shadow-2xl border border-[#2b987580]">
+        <div className="succsess-alert flex items-center justify-between w-full h-12 sm:h-14 rounded-lg bg-purple-900 px-[10px] shadow-2xl border border-black">
           <div className="flex gap-2">
-            <div className="text-[#2b9875] bg-white/5 backdrop-blur-xl p-1 rounded-lg">
+            <div className="text-green-500 bg-white/5 backdrop-blur-xl p-1 rounded-lg">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -32,8 +32,8 @@ const SuccessToaster = ({ visible }) => {
               </svg>
             </div>
             <div>
-              <p className="text-white font-medium">დაემატა კალათაში</p>
-              <p className="text-gray-400">პროდუქტი წარმატებით დაემატა</p>
+              <p className="text-white font-medium">Added to cart</p>
+              <p className="text-gray-400">Product added successfully.</p>
             </div>
           </div>
         </div>

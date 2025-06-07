@@ -14,7 +14,7 @@ import Flamer from "../../Components/Home/LoadersHM/Flamer";
 import { useAppContext } from "../../Context/AppContextReducer";
 
 import Aurora from "../../Components/Ui/Aura";
-
+const BackgroundDesign = [Ghost, Ghost, Flamer, Flamer, Ghost, Flamer];
 export const Home = () => {
   // const { state } = useAppContext();
   //cart test
@@ -40,6 +40,19 @@ export const Home = () => {
       }
     }, 1000);
   }, []);
+  // const [backgrounds, setBackgrounds] = useState([]);
+  // useEffect(() => {
+  //   const items = Array.from({ length: 8 }, (_, i) => {
+  //     const Comp =
+  //       BackgroundDesign[Math.floor(Math.random() * BackgroundDesign.length)];
+  //     const top = Math.floor(Math.random() * 120); // 0% - 90%
+  //     const left = Math.floor(Math.random() * 90);
+  //     return { Comp, top, left, key: i };
+  //   });
+
+  //   setBackgrounds(items);
+  // }, []);
+
   return (
     <motion.div
       className="min-h-screen  flex flex-col justify-between text-white"
@@ -51,24 +64,53 @@ export const Home = () => {
         <div className="flex-grow">
           <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
             <div className="flex flex-row gap-20">
-              <div className="relative top-20">
+              <div className="relative top-20 -z-10 opacity-40 mmd:opacity-100">
                 <Ghost />
               </div>
               <div className="w-full flex justify-center relative -top-20 ">
                 <img
                   src={musicWeb}
                   alt="music visual"
-                  className="w-[900px] max-w-full rounded-full contrast-125 hue-rotate-[-35deg] saturate-50"
+                  className="hidden  mmd:block w-[900px] max-w-full rounded-full contrast-125 hue-rotate-[-35deg] saturate-50 z-10"
                 />
               </div>
-              <div className=" relative top-96">
+              <div className=" relative top-96 -z-10 opacity-40 mmd:opacity-100">
                 <Flamer />
               </div>
             </div>
             {/* <Spline scene="https://prod.spline.design/FYO052hVaX2k2Rm3/scene.splinecode" /> */}
           </div>
-          <div className=" relative -top-40   ">
-            <HomeShowProducts />
+          <div className="relative top-0 mmd:-top-40 z-10">
+            {/* Background elements */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+              {BackgroundDesign.map((Component, index) => {
+                // წინასწარ განსაზღვრული პოზიციები (მაგალითად)
+                const positions = [
+                  { top: "40%", left: "20%" },
+                  { top: "35%", right: "0%" },
+                  { top: "80%", left: "0%" },
+                  { top: "95%", right: "5%" },
+                  { top: "100%", right: "60%" },
+                  { top: "55%", right: "35%" },
+                ];
+                const style = {
+                  position: "absolute",
+                  ...positions[index % positions.length],
+                  opacity: 0.5,
+                };
+
+                return (
+                  <div key={index} style={style}>
+                    <Component />
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Foreground products */}
+            <div className="relative z-10">
+              <HomeShowProducts />
+            </div>
           </div>
         </div>
 
@@ -79,15 +121,15 @@ export const Home = () => {
               <p className="text-gray-300 font-mono text-medium flex flex-row gap-2">
                 Here you can buy printed T-shirts and accessories of your
                 favorite singers.{" "}
-                <p className="text-yellow-200"> Payment via PayPal.</p>
+                <span className="text-yellow-200"> Payment via PayPal.</span>
               </p>
             </div>
             <div className="flex flex-row justify-between">
-              <div class="group relative  flex flex-row gap-5">
+              <div className="group relative  flex flex-row gap-5">
                 <p className="text-medium text-gray-300 font-mono">
                   Visit Our Instagram For more NEWS
                 </p>
-                <button class="focus:outline-none" onClick={goInsta}>
+                <button className="focus:outline-none" onClick={goInsta}>
                   <svg
                     viewBox="0 0 16 16"
                     className="bi bi-instagram transform transition-transform duration-300 hover:scale-125 hover:text-blue-500"
@@ -103,7 +145,7 @@ export const Home = () => {
                   Instagram
                 </span>
               </div>
-              <p className="-translate-x-10 translate-y-10 text-sm font-serif text-gray-500">
+              <p className="-translate-x-10 translate-y-10 text-sm font-serif text-gray-800">
                 @By SSENY
               </p>
             </div>

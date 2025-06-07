@@ -1,0 +1,41 @@
+/* From Uiverse.io by ilkhoeri */
+.loader {
+  --dasharray: 814;
+  position: relative;
+  width: 300px;
+  max-width: 550px;
+  height: 206px;
+  background: transparent none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader svg {
+  position: absolute;
+  width: 400px;
+  max-width: 550px;
+  height: auto;
+}
+.loader svg path {
+  stroke-dasharray: var(--dasharray);
+  -webkit-animation: heartRate 5s infinite linear forwards;
+  animation: heartRate 2s infinite linear forwards;
+}
+
+@-webkit-keyframes heartRate {
+  from {
+    stroke-dashoffset: var(--dasharray);
+  }
+  to {
+    stroke-dashoffset: calc(var(--dasharray) * -1px);
+  }
+}
+@keyframes heartRate {
+  from {
+    stroke-dashoffset: var(--dasharray);
+  }
+  to {
+    stroke-dashoffset: calc(var(--dasharray) * -1px);
+  }
+}

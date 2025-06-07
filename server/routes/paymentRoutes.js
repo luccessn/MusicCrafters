@@ -60,15 +60,18 @@ const paypalClient = new paypal.core.PayPalHttpClient(
 
 // 1) PayPal შეკვეთის შექმნა
 router.post("/create-paypal-order", async (req, res) => {
-  const { cartItems } = req.body;
+  const { cartItems, totalAmount: clientTotal } = req.body;
 
-  const totalAmount = cartItems
-    .reduce(
-      (acc, item) =>
-        acc + parseFloat(item.price.replace("$", "")) * item.quantity,
-      0
-    )
-    .toFixed(2);
+  // თუ clientTotal არის, გამოიყენე ის, თორემ გამოთვალე ხელახლა
+  const totalAmount = clientTotal
+    ? parseFloat(clientTotal).toFixed(2)
+    : cartItems
+        .reduce(
+          (acc, item) =>
+            acc + parseFloat(item.price.replace("$", "")) * item.quantity,
+          0
+        )
+        .toFixed(2);
 
   const request = new paypal.orders.OrdersCreateRequest();
   request.prefer("return=representation");
