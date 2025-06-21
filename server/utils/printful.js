@@ -32,11 +32,11 @@ const buildPrintfulOrderData = (userData, items) => {
       address2: userData.address2 || "",
       city: userData.city,
       state_code: userData.state || null,
-      country_code: userData.country, // Must be like "GE", "US", etc.
-      zip: userData.postalCode, // აქ zip-ის გამოყენება
+      country_code: userData.country,
+      zip: userData.postalCode,
     },
     items: items.map((item) => ({
-      sync_variant_id: item.sync_variant_id, // ✅
+      sync_variant_id: item.sync_variant_id, // yep
       quantity: item.quantity,
     })),
   };

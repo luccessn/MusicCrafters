@@ -1,4 +1,3 @@
-// buildOrderEmail.js
 function buildOrderEmail(to_name, message) {
   return `
   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; background: #fdfdfd; border: 1px solid #eaeaea;">

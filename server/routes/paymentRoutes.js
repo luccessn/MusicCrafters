@@ -16,7 +16,7 @@ const paypalClient = new paypal.core.PayPalHttpClient(
     process.env.PAYPAL_CLIENT_SECRET
   )
 );
-// 1) PayPal შეკვეთის შექმნა
+//  PayPal შეკვეთის შექმნა
 router.post("/create-paypal-order", async (req, res) => {
   const { cartItems, totalAmount: clientTotal } = req.body;
 
@@ -60,26 +60,25 @@ router.post("/create-paypal-order", async (req, res) => {
   }
 });
 
-// 2) PayPal გადახდის დადასტურება და Printful შეკვეთის შექმნა
+//  PayPal გადახდის დადასტურება და Printful შეკვეთის შექმნა
 router.post("/confirm", async (req, res) => {
   const { userData, cartItems } = req.body;
 
   console.log("🟡 Received confirmation request");
   console.log("User Data:", userData);
   console.log("Cart Items:", cartItems);
-  // // ⛔️ ვალიდაცია სანამ printful-ში გაგზავნით
 
   try {
-    // 🔹1. შეკვეთის Printful-ის ფორმატში ჩამოყალიბება
+    // შეკვეთის Printful-ის ფორმატში ჩამოყალიბება
     const orderData = buildPrintfulOrderData(userData, cartItems);
     console.log(
       "Prepared Printful Order Data:",
       JSON.stringify(orderData, null, 2)
     );
 
-    // 🔹2. Printful-ზე გაგზავნა
+    // Printful-ზე გაგზავნა
     const printfulResponse = await createPrintfulOrder(orderData);
-    // 🔹3. მთლიანი თანხის დათვლა
+    // მთლიანი თანხის დათვლა
     const totalAmount = cartItems
       .reduce(
         (acc, item) =>
@@ -105,7 +104,7 @@ router.post("/confirm", async (req, res) => {
       subject: "Your order confirmation",
       html,
     });
-    // 🔹4. MongoDB-ში Order-ის შენახვა
+    // 4. MongoDB-ში Order-ის შენახვა
     const newOrder = new Order({
       user: userData,
       items: cartItems,
@@ -114,19 +113,19 @@ router.post("/confirm", async (req, res) => {
     });
     await newOrder.save();
 
-    // 🔹5. წარმატება
+    // 5. წარმატება
     console.log("Printful Order Created:", printfulResponse);
     res
       .status(200)
       .json({ message: "Order placed with Printful successfully." });
   } catch (error) {
-    console.error("❌ Error in /paypal/confirm:", error.message);
+    console.error("Error in /paypal/confirm:", error.message);
 
     if (error.response) {
-      console.error("❌ Printful Response Status:", error.response.status);
-      console.error("❌ Printful Error Data:", error.response.data);
+      console.error("Printful Response Status:", error.response.status);
+      console.error("Printful Error Data:", error.response.data);
     } else {
-      console.error("❌ General Error:", error);
+      console.error("General Error:", error);
     }
 
     const errMsg =

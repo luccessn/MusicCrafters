@@ -6,9 +6,6 @@ const cors = require("cors");
 const cron = require("node-cron");
 const axios = require("axios");
 
-const Design = require("./Models/Design");
-const printfulAPI = require("./utils/printful");
-
 const app = express();
 
 // Middleware-ები
@@ -23,13 +20,13 @@ mongoose
     serverSelectionTimeoutMS: 50000,
   })
   .then(() => {
-    console.log("✅ კავშირი MongoDB-თან წარმატებით დამყარდა");
+    console.log("ავშირი MongoDB-თან წარმატებით დამყარდა");
   })
-  .catch((err) => console.error("❌ MongoDB კავშირის შეცდომა:", err));
+  .catch((err) => console.error("MongoDB კავშირის შეცდომა:", err));
 
 // Root
 app.get("/server", (req, res) => {
-  res.send("API მუშაობს");
+  res.send("BackEND ი წარმატებით მუშაობს");
 });
 
 // PayPal
@@ -42,17 +39,14 @@ app.use("/server/api/printful", printfulRoutes);
 //
 //ყოველ 5 წუთში არესტარტებს
 cron.schedule("*/5 * * * *", async () => {
-  console.log("🔁 Printful სინქრონიზაცია დაიწყო...");
+  console.log("Printful სინქრონიზაცია დაიწყო...");
   try {
     const response = await axios.get(
       "http://localhost:3001/server/api/printful/sync"
     );
-    console.log(
-      "✅ Printful სინქრონიზაცია წარმატებულია:",
-      response.data.message
-    );
+    console.log("Printful სინქრონიზაცია წარმატებულია:", response.data.message);
   } catch (error) {
-    console.error("❌ სინქრონიზაციის შეცდომა:", error.message);
+    console.error("სინქრონიზაციის შეცდომა:", error.message);
   }
 });
 

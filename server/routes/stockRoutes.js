@@ -17,7 +17,7 @@ router.patch("/update-stock", async (req, res) => {
         continue;
       }
 
-      // ვვარაუდობთ, რომ Design მოდელს აქვს 'stock' ველი
+      //
       design.stock = Math.max((design.stock || 0) - quantity, 0);
       await design.save();
 
@@ -29,8 +29,8 @@ router.patch("/update-stock", async (req, res) => {
 
     res.json({ updatedStock });
   } catch (err) {
-    console.error("მარაგის განახლების შეცდომა:", err);
-    res.status(500).json({ message: "მარაგის განახლება ვერ მოხერხდა." });
+    console.error("Error Of Update STOCK:", err);
+    res.status(500).json({ message: "Failed to update STOCK." });
   }
 });
 

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Design = require("../Models/Design");
 const { printfulAPI } = require("../utils/printful");
-// 📌 ROUTE: Printful-დან მონაცემების წამოღება და ბაზაში შენახვა
+// Printful-დან მონაცემების წამოღება და ბაზაში შენახვა
 router.get("/sync", async (req, res) => {
   try {
     const productsResponse = await printfulAPI.get("/store/products");
@@ -106,7 +106,7 @@ router.get("/sync", async (req, res) => {
 
     res.json({ message: "Printful Designs synchronized successfully." });
   } catch (err) {
-    console.error("❌ შეცდომა:", err.response?.data || err.message);
+    console.error("შეცდომა:", err.response?.data || err.message);
     res.status(500).json({ error: err.message });
   }
 });

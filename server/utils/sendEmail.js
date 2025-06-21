@@ -19,7 +19,7 @@ const sendEmail = async ({ to, subject, html }) => {
     return info;
   } catch (error) {
     console.error("Error sending email:", error);
-    throw error; // რომ ზუსტად შევძლოთ ამოდის შეცდომის აღება
+    throw error; //
   }
 };
 
