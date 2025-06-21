@@ -76,6 +76,7 @@ router.get("/sync", async (req, res) => {
 
           return {
             variant_id: variant.variant_id,
+            sync_variant_id: variant.id, // <=== აქ არის მთავარი ცვლილება
             size,
             color,
             color_code,
@@ -101,35 +102,7 @@ router.get("/sync", async (req, res) => {
         },
         { upsert: true, new: true }
       );
-
-      // console.log(`🛍️ პროდუქტი "${name}" სინქრონიზირებულია DB-ში.`);
-      // console.log(`💰 პროდუქტის გარე ფასი: ${price}`);
-      // // console.log(JSON.stringify(productDetails, null, 2));
-
-      // // აქ გამოვიტანო მხოლოდ პირველი variant-ის პირველი 2 ფოტო
-      // if (variants.length > 0) {
-      //   const firstVariant = variants[0];
-      //   for (let j = 0; j < Math.min(2, firstVariant.files.length); j++) {
-      //     const file = firstVariant.files[j];
-      //     console.log(
-      //       `- პირველი variant-ის ფოტო #${j + 1}: ${file.preview_url}`
-      //     );
-      //   }
-      // }
     }
-    // MONGODB is LOG - ი
-    // const allDesigns = await Design.find({});
-    // allDesigns.forEach((design) => {
-    //   console.log(
-    //     `\n🖼 Design: ${design.name} (ID: ${design.printfulProductId})`
-    //   );
-    //   console.log(`Photos:`, design.images);
-    //   design.variants.forEach((v) => {
-    //     console.log(
-    //       `- ID: ${v.id}, Size: ${v.size}, Color: ${v.color}, Price: ${v.retail_price}`
-    //     );
-    //   });
-    // });
 
     res.json({ message: "Printful Designs synchronized successfully." });
   } catch (err) {

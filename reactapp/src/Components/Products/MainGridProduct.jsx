@@ -45,7 +45,7 @@ const MainGridProduct = ({ props }) => {
       {props.images?.img1 ? (
         <div
           onClick={goDTL}
-          className=" w-[380px] h-[450px] sm:w-[320px] sm:h-[400px]  xxl:w-[340px] xxl:h-[400px] xxxl:w-[380px] xxxl:h-[500px] flex flex-col rounded-xl relative shadow hover:shadow-md transition"
+          className=" w-[160px] h-[230px] ssmm:w-[190px] ssmm:h-[260px] ssm:w-[220px] ssm:h-[290px] sfm:w-[260px] sfm:h-[330px] smm:w-[280px] smm:h-[350px]  sm:w-[340px] sm:h-[400px] xxxl:w-[380px] xxxl:h-[500px] flex flex-col rounded-xl relative shadow hover:shadow-md transition"
         >
           <div className="w-full h-[380px] overflow-hidden rounded-sm">
             <img
@@ -72,17 +72,17 @@ const MainGridProduct = ({ props }) => {
                 <div className="flex flex-col gap-2 mt-4 items-center">
                   {/* პროდუქტის სახელი */}
                   <div className="text-center w-full px-2">
-                    <span className="text-lg text-gray-100 font-semibold truncate block">
+                    <span className="text-sm ssm:w-full sfm:text-base smm:text-lg text-gray-100 font-semibold break-words leading-snug block">
                       {props.name}
                     </span>
                   </div>
 
                   {/* ფასი და stock */}
                   <div className="flex justify-center items-center gap-10">
-                    <span className="text-green-400 font-bold text-xl">
+                    <span className="text-green-400 font-bold text-sm sfm:text-medium  smm:text-lg">
                       {props.price ? props.price : props.maxPrice} $
                     </span>
-                    <span className="text-purple-400 text-xl font-mono">
+                    <span className="text-purple-400 text-sm sfm:text-medium smm:text-lg font-mono">
                       Stock: {props.stock}
                     </span>
                   </div>

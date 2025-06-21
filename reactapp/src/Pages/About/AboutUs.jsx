@@ -12,21 +12,29 @@ import SendIcon from "@rsuite/icons/Send";
 const AboutUs = () => {
   return (
     <motion.div
-      className="min-h-screen relative -top-24  flex flex-col md:flex-row  items-center justify-between  text-white"
+      className="min-h-screen relative gap-24 top-40 xl:-top-24  flex flex-col  xl:flex-row  items-center justify-between  text-white"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
       {/* Left side text */}
-      <div className="   px-40 ">
-        <h1 className="text-5xl font-bold leading-tight mb-4">
-          Card stacks have never <br /> looked so good
+      <div className=" pl-10 sfm:pl-20   ">
+        <h1 className=" text-2xl ssm:text-4xl smm:text-5xl xl:w-[400px] xxl:w-full xl:text-4xl xxxl:text-5xl font- leading-tight mb-4">
+          {" "}
+          𝕄𝕦𝕤𝕚𝕔𝕣𝕒𝕗𝕥𝕖𝕣𝕤 = 𝕐𝕠𝕦𝕣 𝕣𝕚𝕘𝕙𝕥 𝕔𝕙𝕠𝕚𝕔𝕖
         </h1>
-        <p className="text-gray-400 text-lg">Just look at it go!</p>
+        <p className="text-gray-400 text-sm w-[250px] ssm:text-lg ssm:w-[400px] smm:w-[600px] xl:w-[400px]  xxl:w-[600px] flex flex-col gap-2">
+          Musicrafters is an accessories brand inspired by music and legendary
+          artists. We create unique designs and print them on high-quality
+          products — bringing the energy of music into everyday style.
+          <span>
+            Our pieces are style that resonates - feel the vibe, wear the music.
+          </span>
+        </p>
       </div>
 
       {/* Right side stacked cards */}
-      <div className=" relative -top-20 right-60 h-[500px] bg-blue-400">
+      <div className=" relative -top-72 ssm:-top-60 mmd:-top-80 left-40 smm:left-80 xl:-left-60 xl:-top-20  h-[500px] bg-blue-400">
         <div className="">
           <CardSwap
             cardDistance={60}

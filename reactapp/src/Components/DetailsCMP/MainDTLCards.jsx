@@ -26,6 +26,8 @@ import {
 } from "../../Context/AppActionsCreator";
 import SuccessToaster from "../Products/Toaster/SuccessToaster";
 import ErrorLoader from "../Loaderings/ErrorLoader";
+import { useNavigate } from "react-router-dom";
+import { routes } from "../../Constants/ConstRouts/routes";
 const MainDTLCards = ({ data }) => {
   const [imgsChange, setImgsChange] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -112,6 +114,7 @@ const MainDTLCards = ({ data }) => {
     if (!variant) return alert("ვარიანტი ვერ მოიძებნა");
     const itemToAdd = {
       id: `${data._id}-${selectedSize}-${selectedColor.color_code}`,
+      sync_variant_id: variant.sync_variant_id, // ← სწორი ველი
       variantId: variant.variant_id,
       printfulProductId: data.printfulProductId,
       name: data.name,
@@ -127,11 +130,11 @@ const MainDTLCards = ({ data }) => {
     setShowToaster(true);
     setTimeout(() => setShowToaster(false), 3000);
   };
-  console.log(data);
-  console.log("Stock value:", data.stock, typeof data.stock);
+
   useEffect(() => {
     dispatch(CounterReset());
   }, [data]);
+  const navigate = useNavigate();
   return (
     <motion.div
       className="text-5xl p-6 text-white"
@@ -143,7 +146,7 @@ const MainDTLCards = ({ data }) => {
         <div className="text-white p-6   items-center text-5xl">
           <div className="flex flex-col   mmd:flex-row gap-14">
             {/* სურათების Swiper */}
-            <div className="flex flex-row gap-14">
+            <div className="flex flex-row p-10 ssmm:p-0 gap-5 ssmm:gap-14">
               <div className="flex flex-col gap-5 w-[150px] sm:w-[200px] h-[600px] mmd:h-[700px]">
                 <Swiper
                   navigation={true}
@@ -187,7 +190,7 @@ const MainDTLCards = ({ data }) => {
                     <img
                       src={imgsChange}
                       alt=""
-                      className=" w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] object-cover rounded-lg cursor-zoom-in"
+                      className=" w-[300px] ssmm:w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] object-cover rounded-lg cursor-zoom-in"
                     />
                   </Zoom>
                   {/* {data.sale && (
@@ -202,7 +205,7 @@ const MainDTLCards = ({ data }) => {
               )}
             </div>
             {/* მარჯვენა მხარე: ინფორმაცია, ფასი, ზომები */}
-            <div className="   mmd:top-0  w-[400px] flex flex-col gap-8 font-serif">
+            <div className="  p-10 ssmm:p-0  mmd:top-0  w-[400px] flex flex-col gap-8 font-serif">
               <h1 className="text-5xl">{data.name}</h1>
 
               <div className="flex flex-row gap-4 items-center">
@@ -301,7 +304,21 @@ const MainDTLCards = ({ data }) => {
                       </button>
                     </div>
 
-                    <div className="flex items-center justify-between mt-6">
+                    <div className="flex flex-col gap-10 items-center justify-between mt-6">
+                      <button
+                        onClick={() => {
+                          AddToCart();
+                          navigate(routes.checkout);
+                        }}
+                        disabled={data.stock === 0}
+                        className={`transition px-6 py-3 w-full rounded-lg text-white text-xl ${
+                          data.stock === 0
+                            ? "bg-gray-500 opacity-50 cursor-not-allowed"
+                            : "bg-rose-800 hover:bg-rose-950"
+                        }`}
+                      >
+                        {data.stock === 0 ? "Sold Out" : "Pay Now"}
+                      </button>
                       <button
                         onClick={AddToCart}
                         disabled={data.stock === 0}
@@ -313,6 +330,7 @@ const MainDTLCards = ({ data }) => {
                       >
                         {data.stock === 0 ? "Sold Out" : "Add to Cart"}
                       </button>
+
                       <div>
                         <SuccessToaster visible={showToaster} />
                       </div>

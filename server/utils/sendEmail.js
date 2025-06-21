@@ -1,26 +1,26 @@
-const axios = require("axios");
+const nodemailer = require("nodemailer");
+const sendEmail = async ({ to, subject, html }) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "gulualuka0@gmail.com",
+      pass: "xvwz lxrn kosy pdzz ",
+    },
+  });
 
-const sendEmail = async (templateParams) => {
   try {
-    const response = await axios.post(
-      "https://api.emailjs.com/api/v1.0/email/send",
-      {
-        service_id: process.env.EMAILJS_SERVICE_ID,
-        template_id: process.env.EMAILJS_TEMPLATE_ID,
-        user_id: process.env.EMAILJS_USER_ID,
-        template_params: templateParams,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    console.log("EmailJS response:", response.data);
-    return response.data;
+    const info = await transporter.sendMail({
+      from: '"MusicCraftersShop" <no-reply@yourshop.com>',
+      to,
+      subject,
+      html,
+    });
+    console.log("Email sent:", info.response);
+    return info;
   } catch (error) {
-    console.error("EmailJS error:", error.response?.data || error.message);
-    throw error;
+    console.error("Error sending email:", error);
+    throw error; // რომ ზუსტად შევძლოთ ამოდის შეცდომის აღება
   }
 };
+
 module.exports = sendEmail;

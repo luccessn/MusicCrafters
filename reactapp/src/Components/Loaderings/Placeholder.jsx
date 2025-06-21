@@ -3,7 +3,7 @@ import React from "react";
 
 const Placeholder = () => {
   return (
-    <div className="animate-pulse flex flex-col relative left-24 mmd:left-0 mmd:flex-row gap-8 px-4 py-8  justify-center">
+    <div className="animate-pulse flex flex-col relative left-0 sfm:left-24 mmd:left-0 mmd:flex-row gap-8 px-4 py-8  justify-center">
       {/* Left side - image and preview */}
       <div className="flex flex-row gap-8">
         <div className="flex flex-col items-center gap-4">

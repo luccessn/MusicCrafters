@@ -6,6 +6,8 @@ const printfulAPI = axios.create({
     Authorization: `Bearer ${process.env.PRINTFUL_API_KEY}`,
   },
 });
+// //ვალიდაცია
+
 // module.exports = printfulAPI;
 const createPrintfulOrder = async (orderData) => {
   try {
@@ -23,18 +25,18 @@ const createPrintfulOrder = async (orderData) => {
 const buildPrintfulOrderData = (userData, items) => {
   return {
     recipient: {
-      email: userData.email,
       name: userData.name,
-      country: userData.country,
-      state: userData.state,
-      city: userData.city,
-      address1: userData.address1,
-      address2: userData.address2,
-      postalCode: userData.postalCode,
+      email: userData.email,
       phone: userData.phone,
+      address1: userData.address1,
+      address2: userData.address2 || "",
+      city: userData.city,
+      state_code: userData.state || null,
+      country_code: userData.country, // Must be like "GE", "US", etc.
+      zip: userData.postalCode, // აქ zip-ის გამოყენება
     },
     items: items.map((item) => ({
-      variant_id: item.variantId,
+      sync_variant_id: item.sync_variant_id, // ✅
       quantity: item.quantity,
     })),
   };

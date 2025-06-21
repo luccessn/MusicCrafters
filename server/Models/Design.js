@@ -13,6 +13,7 @@ const designSchema = new mongoose.Schema({
   },
   variants: [
     {
+      sync_variant_id: Number,
       variant_id: Number,
       size: String,
       color: String,

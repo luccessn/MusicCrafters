@@ -28,23 +28,25 @@ mongoose
   .catch((err) => console.error("❌ MongoDB კავშირის შეცდომა:", err));
 
 // Root
-app.get("/", (req, res) => {
+app.get("/server", (req, res) => {
   res.send("API მუშაობს");
 });
 
 // PayPal
 const paypalRoutes = require("./routes/paymentRoutes");
-app.use("/api/paypal", paypalRoutes);
+app.use("/server/api/paypal", paypalRoutes);
 
 //
 const printfulRoutes = require("./routes/printfulRoutes");
-app.use("/api/printful", printfulRoutes);
+app.use("/server/api/printful", printfulRoutes);
 //
 //ყოველ 5 წუთში არესტარტებს
 cron.schedule("*/5 * * * *", async () => {
   console.log("🔁 Printful სინქრონიზაცია დაიწყო...");
   try {
-    const response = await axios.get("http://localhost:3001/api/printful/sync");
+    const response = await axios.get(
+      "http://localhost:3001/server/api/printful/sync"
+    );
     console.log(
       "✅ Printful სინქრონიზაცია წარმატებულია:",
       response.data.message
@@ -56,27 +58,12 @@ cron.schedule("*/5 * * * *", async () => {
 
 //
 const stockRoutes = require("./routes/stockRoutes");
-app.use("/api/stock", stockRoutes);
+app.use("/server/api/stock", stockRoutes);
 // პორტი
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`🚀 სერვერი მუშაობს პორტზე ${PORT}`);
 });
-
-// CvImages
-// app.get("/getcvImages", async (req, res) => {
-//   try {
-//     const image = req.query.id
-//       ? await CvImagesModel.findOne({ id: req.query.id })
-//       : await CvImagesModel.find();
-
-//     if (!image) return res.status(404).json({ error: "პროდუქტი ვერ მოიძებნა" });
-//     res.json(image);
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// });
-// const CvImagesModel = require("./Models/cvImages");
-// const CaseImagesModel = require("./Models/caseImages");
-// const HodImagesModel = require("./Models/hoodImages");
-// const TshImagesModel = require("./Models/tshirtImages");
+// http://localhost:3001/server
+// "https://ferraritifo.live/server/api/printful/sync"
+// https://ferraritifo.live/server/api/printful/sync

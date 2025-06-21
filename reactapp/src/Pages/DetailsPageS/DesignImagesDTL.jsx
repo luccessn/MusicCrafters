@@ -8,7 +8,7 @@ const DesignImagesDTL = () => {
   const { prID } = useParams();
 
   const [data, error, loading] = useFetchData(
-    `http://localhost:3001/api/printful/get?id=${prID}`
+    `http://localhost:3001/server/api/printful/get?id=${prID}`
   );
 
   if (error) {
@@ -26,3 +26,4 @@ const DesignImagesDTL = () => {
 };
 
 export default DesignImagesDTL;
+// `https://ferraritifo.live/server/api/printful/get?id=${prID}`

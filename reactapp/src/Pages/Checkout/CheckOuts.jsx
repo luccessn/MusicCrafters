@@ -11,9 +11,9 @@ import CheckCard from "../../Components/CheckOut/CheckCard";
 import "./bt1.css";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { clearCart } from "../../Context/AppActionsCreator";
-//phone input
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { usStates, zipRegexByState } from "./usStates";
 ///MODAL
 import {
   Modal,
@@ -24,6 +24,8 @@ import {
   Button,
   useDisclosure,
 } from "@heroui/react";
+import { Panel, PanelGroup } from "rsuite";
+
 const CheckOuts = () => {
   const [promoCode, setPromoCode] = useState("");
   const [isPromoApplied, setIsPromoApplied] = useState(false);
@@ -45,13 +47,22 @@ const CheckOuts = () => {
     city: "",
     phone: "",
   });
-
+  const [zipError, setZipError] = useState("");
   const ChangeInput = (e) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "postalCode" && Data.country === "US") {
+      const stateCode = Data.state;
+      const regex = zipRegexByState[stateCode];
+      if (regex && !regex.test(value)) {
+        setZipError(`ZIP code does not match ${stateCode} format.`);
+      } else {
+        setZipError("");
+      }
+    }
   };
   const cartItems = state.cartItems;
-  console.log(cartItems);
 
   const nedliTotal = cartItems.reduce(
     (acc, item) =>
@@ -60,17 +71,103 @@ const CheckOuts = () => {
   );
 
   const totalAmount = isPromoApplied
-    ? (nedliTotal * 0.8).toFixed(2)
+    ? (nedliTotal * 0.01).toFixed(2)
     : nedliTotal.toFixed(2);
-  const isFormValid =
-    Object.entries(Data).every(
-      ([key, value]) => key === "apartment" || value.trim() !== ""
-    ) && isChecked;
+  function validateZip(zip, stateCode, country) {
+    if (country !== "US") {
+      return true; // სხვა ქვეყნების შემთხვევაში უბრალოდ ვატოვებთ ვალიდაციას
+    }
+    const regex = zipRegexByState[stateCode];
+    return regex ? regex.test(zip) : false;
+  }
+  const isZipValid = validateZip(Data.postalCode, Data.state, Data.country);
 
+  const isFormValid =
+    Object.entries(Data).every(([key, value]) => {
+      if (key === "apartment") return true; // apartment optional
+      if (key === "state" && Data.country !== "US") return true; // არა US
+      if (key === "postalCode" && Data.country === "US") return isZipValid; // US-ის შემთხვევაში ვალიდური zip აუცილებელია
+      return value.trim() !== "";
+    }) && isChecked;
   return (
-    <div className="flex flex-row relative gap-40 justify-center text-white py-10">
-      <form className="flex flex-col gap-4 rounded-lg w-[500px]">
+    <div className="flex  flex-col items-center lg:items-start  xl:p-0 lg:flex-row  relative gap-14 lg:gap-24  xl:gap-40 justify-center text-white py-10">
+      <PanelGroup
+        accordion
+        defaultActiveKey={null}
+        className=" block lg:hidden"
+      >
+        <Panel
+          header={
+            <div className=" w-full flex justify-between items-center px-2">
+              <span className="text-base font-semibold">Your Order</span>
+              <span className="text-base font-semibold text-green-400">
+                ${totalAmount}
+              </span>
+            </div>
+          }
+          eventKey={1}
+          className=" w-[350px]  ssmm:w-[380px] ssm:w-[450px] sfm:w-[500px] smm:w-[600px] "
+        >
+          <div className="flex flex-col gap-8 rounded-2xl shadow-xl p-8">
+            <div
+              className={`flex flex-col gap-5 overflow-y-auto ${
+                state.cartItems.length > 3 ? "max-h-[300px]" : ""
+              }`}
+            >
+              {state.cartItems.map((item) => (
+                <CheckCard key={item.id} props={item} />
+              ))}
+            </div>
+
+            {/* Promo Code */}
+            <div className="flex flex-row gap-5">
+              <input
+                type="text"
+                placeholder="Promo Code"
+                className="w-full bg-[#1b1b1b] p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
+                value={promoCode}
+                onChange={(e) => setPromoCode(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  if (isValidCode) {
+                    setIsPromoApplied(true);
+                    alert("Promo Applied");
+                  } else {
+                    setIsPromoApplied(false);
+                    alert("Invalid Promo Code");
+                  }
+                }}
+                className={`px-5 py-2 rounded-lg font-semibold transition duration-300 ${
+                  isValidCode
+                    ? "bg-green-600 text-white"
+                    : "bg-gray-700 text-gray-300"
+                }`}
+              >
+                APPLY
+              </button>
+            </div>
+
+            {/* Totals */}
+            <div className="flex justify-between text-zinc-200">
+              <h1 className="text-medium">Subtotal ·</h1>
+              <h1 className="text-medium">
+                {state.cartItems.reduce((acc, item) => acc + item.quantity, 0)}{" "}
+                items
+              </h1>
+            </div>
+            <div className="flex justify-between text-white">
+              <h1 className="text-medium">Total: </h1>
+              <h1 className="text-medium">${totalAmount}</h1>
+            </div>
+          </div>
+        </Panel>
+      </PanelGroup>
+
+      <form className="flex p-10 ssmm:p-0 flex-col gap-4 rounded-lg w-[380px] ssm:w-[450px] sfm:w-[500px] smm:w-[600px] lg:w-[500px]">
         {/* Payment Info */}
+
         <div>
           <h2 className="text-2xl mb-4 text-zinc-300">Payment Information</h2>
           <div className="flex flex-col gap-4">
@@ -121,30 +218,63 @@ const CheckOuts = () => {
               </div>
             </div>
             <div>
-              <label htmlFor="text" className="text-sm text-gray-400">
+              <label htmlFor="country" className="text-sm text-gray-400">
                 Country/Region
               </label>
-              <input
+              <select
                 name="country"
                 value={Data.country}
                 onChange={ChangeInput}
-                type="text"
-                placeholder="Country/Region"
-                className="w-full bg-[#1b1b1b] p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
-              />
+                className="w-full bg-[#1b1b1b] text-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
+              >
+                <option value="">Select a country</option>
+                <option value="US">United States</option>
+                <option value="GE">Georgia</option>
+                <option value="CA">Canada</option>
+                <option value="DE">Germany</option>
+                <option value="FR">France</option>
+                <option value="GB">United Kingdom</option>
+                <option value="IT">Italy</option>
+                <option value="ES">Spain</option>
+                <option value="JP">Japan</option>
+                <option value="CN">China</option>
+                <option value="AU">Australia</option>
+                <option value="BR">Brazil</option>
+                <option value="IN">India</option>
+                <option value="RU">Russia</option>
+                {/* დამატებით რაც გინდა შეგიძლია დაამატო */}
+              </select>
             </div>
             <div>
-              <label htmlFor="text" className="text-sm text-gray-400">
+              <label htmlFor="state" className="text-sm text-gray-400">
                 State
               </label>
-              <input
-                name="state"
-                value={Data.state}
-                onChange={ChangeInput}
-                type="text"
-                placeholder="State / Region"
-                className="w-full bg-[#1b1b1b] p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
-              />
+
+              {Data.country === "US" ? (
+                <select
+                  name="state"
+                  value={Data.state}
+                  onChange={ChangeInput}
+                  className="w-full bg-[#1b1b1b] p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
+                >
+                  <option value="">Select a state</option>
+                  {usStates.map((state) => (
+                    <option key={state.code} value={state.code}>
+                      {state.name}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  name="state"
+                  value={Data.state}
+                  onChange={ChangeInput}
+                  type="text"
+                  placeholder="State / Region"
+                  disabled={Data.country === "US" ? false : false} // თუ არ გინდა ჩაკეტო, დააყენე false
+                  className="w-full bg-[#1b1b1b] p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
+                />
+              )}
             </div>
 
             <div>
@@ -184,8 +314,13 @@ const CheckOuts = () => {
                   onChange={ChangeInput}
                   type="text"
                   placeholder="Postal Code"
-                  className="w-full bg-[#1b1b1b] p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
+                  className={`w-full bg-[#1b1b1b] p-3 rounded-lg focus:outline-none focus:ring-2 ${
+                    zipError ? "ring-red-500" : "focus:ring-purple-950"
+                  }`}
                 />
+                {zipError && (
+                  <p className="text-red-500 text-xs mt-1">{zipError}</p>
+                )}
               </div>
               <div>
                 <label htmlFor="text" className="text-sm text-gray-400">
@@ -282,16 +417,12 @@ const CheckOuts = () => {
           <PayPalScriptProvider
             options={{
               "client-id":
-                "AZinVI-5L6XyPKBe8_N5vCjLz1_WowwG9loF_rrpvAN4H8z_hz_DfsCkVMGDabchGRQ3lTHM6hChyfmv", // .env-იდან წამოსული
+                "AetgjvMYYTYAViEmx43ac-24iDY0BbA0TkwXH6yplb71oLQbAdyUBqJaiiVZx06NkSaiwZNPLbQIoaLq",
               currency: "USD",
             }}
           >
             <PayPalButtons
               disabled={!isFormValid}
-              onClick={() => {
-                // emailInfo();
-                // successInfo();
-              }}
               style={{
                 layout: "vertical",
                 color: "gold",
@@ -300,35 +431,23 @@ const CheckOuts = () => {
               }}
               forceReRender={[totalAmount]}
               createOrder={async () => {
-                try {
-                  const response = await fetch(
-                    "http://localhost:3001/api/paypal/create-paypal-order",
-                    {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({
-                        cartItems,
-                        totalAmount: parseFloat(totalAmount), // აქ ვაგზავნით დაკლებულ ფასს
-                      }),
-                    }
-                  );
+                const response = await fetch(
+                  "http://localhost:3001/server/api/paypal/create-paypal-order",
+                  {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ cartItems, totalAmount }),
+                  }
+                );
 
-                  const data = await response.json();
+                const data = await response.json();
+                if (!response.ok)
+                  throw new Error(data.error || "Order creation failed");
 
-                  if (!response.ok)
-                    throw new Error(data.error || "Order creation failed");
-
-                  return data.id;
-                } catch (err) {
-                  console.error("PayPal createOrder Error:", err);
-                  alert("Order creation failed");
-                }
+                return data.id; // ეს არის orderId
               }}
               onApprove={async (data, actions) => {
                 try {
-                  const details = await actions.order.capture();
-
-                  // აქ წამოიღე შენი Data state (მომხმარებლის მონაცემები) და cartItems (კალათი)
                   const userData = {
                     email: Data.email,
                     name: `${Data.firstName} ${Data.lastName}`,
@@ -341,29 +460,33 @@ const CheckOuts = () => {
                     phone: Data.phone,
                   };
 
-                  // უკვე გაქვს cartItems state-დან
-
-                  // გაგზავნა backend-ში
+                  // ახლა **არ ჩავიტარო აქ capture!**
+                  // უბრალოდ ვუგზავნით სერვერს orderId-ს და სხვა მონაცემებს
                   const response = await fetch(
-                    "http://localhost:3001/api/paypal/confirm",
+                    "http://localhost:3001/server/api/paypal/confirm",
                     {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({ userData, cartItems }),
+                      body: JSON.stringify({
+                        userData,
+                        cartItems,
+                        orderId: data.orderID,
+                      }),
                     }
                   );
 
-                  if (!response.ok) throw new Error("Failed to confirm order");
+                  const result = await response.json();
+                  if (!response.ok)
+                    throw new Error(result.error || "Failed to confirm order");
 
-                  alert(
-                    `Thank you ${details.payer.name.given_name}, payment successful!`
-                  );
-
-                  dispatch(clearCart());
+                  // წარმატების შემთხვევაში წაგიყვან success გვერდზე
                   window.location.href = "/success";
                 } catch (error) {
-                  console.error("Error in onApprove:", error);
-                  alert("An error occurred during order confirmation.");
+                  console.error("Order confirmation error:", error);
+                  alert(
+                    error.message ||
+                      "An error occurred during order confirmation."
+                  );
                 }
               }}
               onCancel={() => {
@@ -379,7 +502,7 @@ const CheckOuts = () => {
       </form>
 
       {/* Right Panel: Cart Summary */}
-      <div className="flex flex-col gap-8 rounded-2xl shadow-xl p-8">
+      <div className="hidden  lg:flex flex-col w-[500px] gap-8 rounded-2xl shadow-xl p-8">
         <div
           className={`flex flex-col gap-5 overflow-y-auto ${
             state.cartItems.length > 3 ? "max-h-[300px]" : ""
@@ -438,64 +561,6 @@ const CheckOuts = () => {
 };
 
 export default CheckOuts;
-
-// const emailInfo = () => {
-//   console.log("checkout");
-//   emailjs.send(
-//     "service_t7zl5xh", // service ID
-//     "template_dnxwjh9", // template ID
-//     {
-//       data: `
-//       Email: ${Data.email}
-//       Full Name: ${Data.firstName} ${Data.lastName}
-//       Country: ${Data.country}
-//       State: ${Data.state}
-//       Address: ${Data.address}, Apartment: ${Data.apartment}
-//       City: ${Data.city}, Postal Code: ${Data.postalCode}
-//     `,
-//       product: `
-//       Cart: ${cartItems
-//         .map(
-//           (item) =>
-//             `Name: ${item.name}, Quantity: ${item.quantity}, Size: ${item.size}`
-//         )
-//         .join(" | ")}
-//       Total: $${totalAmount}
-//     `,
-//     },
-//     "LXSkZ2wdpNYn9gY7q" // Public Key (user ID)
-//   );
-// };
-// const successInfo = () => {
-//   if (!Data.email || Data.email.trim() === "") {
-//     console.error("Email is empty or invalid:", Data.email);
-//     return; // ან დააწერე UI-ში შეცდომა, რომ ელ.ფოსტა ცარიელია
-//   }
-
-//   console.log("Sending email to admin and customer...");
-
-//   emailjs
-//     .send(
-//       "service_t7zl5xh",
-//       "template_uhh15tk",
-//       {
-//         to_email: Data.email,
-//         Items: `
-//   ${cartItems
-//     .map(
-//       (item) =>
-//         ` ${item.name},  ${item.quantity},  ${item.size} , ${item.price}`
-//     )
-//     .join(" | ")}
-//   `,
-//         Total: totalAmount,
-//       },
-//       "LXSkZ2wdpNYn9gY7q"
-//     )
-//     .then(() => {
-//       console.log("Email sent successfully!");
-//     })
-//     .catch((err) => {
-//       console.error("Failed to send confirmation email.", err);
-//     });
-// };
+// "https://ferraritifo.live/server/api/paypal/create-paypal-order",
+// "https://ferraritifo.live/server/api/paypal/confirm",
+// contactshopmusic@gmail.com

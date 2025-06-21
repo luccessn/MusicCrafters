@@ -7,7 +7,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from "react";
-import { Menu, X, Search, ShoppingCart } from "lucide-react";
+import { Menu, X, ShoppingCart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 // import { Drawer, Button } from "rsuite";
 import "rsuite/dist/rsuite.css";
@@ -69,13 +69,12 @@ const NavBarHR = () => {
           to="/"
           className=" flex items-center  text-sm font-normal text-black"
         >
-          <h1 className="text-3xl relative left-10 font-bold whitespace-pre text-white hover:text-purple-700 transition-colors duration-300    ">
+          <h1 className="text-xl left-1 ssm:text-3xl relative  ssm:left-3 mmd:left-5 font-bold whitespace-pre text-white hover:text-purple-700 transition-colors duration-300    ">
             𝓜𝓾𝓼𝓲𝓬 𝓒𝓻𝓪𝓯𝓽𝓮𝓻𝓼
           </h1>
         </NavLink>
         {/* Icons */}
         <div className="flex gap-4">
-          <Search className="text-white w-5 h-5 hover:scale-110 transition-transform duration-150" />
           <Badge content={state.cartItems.length}>
             <button onClick={onOpen}>
               <ShoppingCart className="text-white w-5 h-5 hover:scale-110 transition-transform duration-150" />
@@ -101,100 +100,112 @@ const NavBarHR = () => {
             size="md"
           >
             <DrawerContent className="bg-purple-950 rounded-sm">
-              {(onClose) => (
-                <>
-                  <DrawerHeader className="flex flex-col gap-1 bg-zinc-800 text-white ">
-                    <div className="flex flex-col gap-5">
-                      <h1 className="text-3xl ">Your Cart</h1>
-                      <div className="flex flex-row justify-between font-serif">
-                        <h1 className="text-medium">Product</h1>
-                        <h1 className="text-medium">Total</h1>
-                      </div>
-                    </div>
-                    <StarsBackground />
-                  </DrawerHeader>
-                  <DrawerBody>
-                    <div className="flex flex-col gap-5 ">
-                      {state.cartItems.map((item) => (
-                        // <h1 key={item.id || index} className="text-4xl">
-                        //   {item.name}
-                        // </h1>
-                        <CartCard key={item.id} props={item} />
-                      ))}
-                    </div>
-                  </DrawerBody>
-                  <DrawerFooter className="bg-zinc-800 flex flex-col gap-3">
-                    {/* Total price calculation */}
-                    <div className="w-full text-white text-xl font-mono flex justify-between px-2 ">
-                      <span>Estimated total :</span>
-                      <span>
-                        {state.cartItems
-                          .reduce((acc, item) => {
-                            const price = parseFloat(
-                              item.price.replace("$", "")
-                            );
-                            return acc + price * item.quantity;
-                          }, 0)
-                          .toFixed(2)}{" "}
-                        $
-                      </span>
-                    </div>
-                    <button
-                      onClick={() =>
-                        navigate(routes.checkout, {
-                          state: {
-                            total: state.cartItems
-                              .reduce((acc, item) => {
-                                const price = parseFloat(
-                                  item.price.replace("$", "")
-                                );
-                                return acc + price * item.quantity;
-                              }, 0)
-                              .toFixed(2),
-                          },
-                        })
-                      }
-                      className="cursor-pointer relative bg-white/10 py-2 rounded-full min-w-[8.5rem] min-h-[2.92rem] group max-w-full flex items-center justify-start hover:bg-purple-950 transition-all duration-[0.8s] ease-[cubic-bezier(0.510,0.026,0.368,1.016)] shadow-[inset_1px_2px_5px_#00000080]"
-                    >
-                      <div className="absolute flex px-1 py-0.5 justify-start items-center inset-0">
-                        <div className="w-[0%] group-hover:w-full transition-all duration-[1s] ease-[cubic-bezier(0.510,0.026,0.368,1.016)]" />
-                        <div className="rounded-full shrink-0 flex justify-center items-center shadow-[inset_1px_-1px_3px_0_black] h-full aspect-square bg-purple-900 transition-all duration-[1s] ease-[cubic-bezier(0.510,0.026,0.368,1.016)] group-hover:bg-black">
-                          <div className="size-[0.8rem] text-black group-hover:text-white group-hover:-rotate-45 transition-all duration-[1s] ease-[cubic-bezier(0.510,0.026,0.368,1.016)]">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 16 16"
-                              height="100%"
-                              width="100%"
-                            >
-                              <path
-                                fill="currentColor"
-                                d="M12.175 9H0V7H12.175L6.575 1.4L8 0L16 8L8 16L6.575 14.6L12.175 9Z"
-                              />
-                            </svg>
-                          </div>
+              {(onClose) => {
+                const handleCheckout = () => {
+                  onClose(); // დახუროს Drawer
+                  setTimeout(() => {
+                    const total = state.cartItems
+                      .reduce((acc, item) => {
+                        const price = parseFloat(item.price.replace("$", ""));
+                        return acc + price * item.quantity;
+                      }, 0)
+                      .toFixed(2);
+
+                    navigate(routes.checkout, {
+                      state: {
+                        total,
+                      },
+                    });
+                  }, 300); // დაელოდოს Drawer-ის დახურვის ანიმაციას
+                };
+
+                return (
+                  <>
+                    <DrawerHeader className="flex flex-col gap-1 bg-zinc-800 text-white">
+                      <div className="flex flex-col gap-5">
+                        <h1 className="text-3xl">Your Cart</h1>
+                        <div className="flex flex-row justify-between font-serif">
+                          <h1 className="text-medium">Product</h1>
+                          <h1 className="text-medium">Total</h1>
                         </div>
                       </div>
-                      <div className="pl-[3.4rem]  pr-[1.1rem] group-hover:pl-[1.1rem] group-hover:pr-[3.4rem] transition-all duration-[1s] ease-[cubic-bezier(0.510,0.026,0.368,1.016)] group-hover:text-black text-white text-medium tracking-widest">
-                        𝐂𝐡𝐞𝐜𝐤 𝐎𝐮𝐭
-                      </div>
-                    </button>
+                      <StarsBackground />
+                    </DrawerHeader>
 
-                    {/* Buttons */}
-                    <div className="flex w-full justify-end gap-3">
-                      <Button color="danger" variant="light" onPress={onClose}>
-                        Close
-                      </Button>
-                      <Button
-                        color="danger"
-                        onPress={() => dispatch(clearCart())}
+                    <DrawerBody>
+                      <div className="flex flex-col gap-5">
+                        {state.cartItems.map((item) => (
+                          <CartCard key={item.id} props={item} />
+                        ))}
+                      </div>
+                    </DrawerBody>
+
+                    <DrawerFooter className="bg-zinc-800 flex flex-col gap-3">
+                      {/* Total price calculation */}
+                      <div className="w-full text-white text-xl font-mono flex justify-between px-2">
+                        <span>Estimated total :</span>
+                        <span>
+                          {state.cartItems
+                            .reduce((acc, item) => {
+                              const price = parseFloat(
+                                item.price.replace("$", "")
+                              );
+                              return acc + price * item.quantity;
+                            }, 0)
+                            .toFixed(2)}{" "}
+                          $
+                        </span>
+                      </div>
+
+                      {/* ✅ Check Out Button */}
+                      <button
+                        onClick={handleCheckout}
+                        className="cursor-pointer relative bg-white/10 py-2 rounded-full min-w-[8.5rem] min-h-[2.92rem] group max-w-full flex items-center justify-start hover:bg-purple-950 transition-all duration-[0.8s] ease-[cubic-bezier(0.510,0.026,0.368,1.016)] shadow-[inset_1px_2px_5px_#00000080]"
                       >
-                        Clear All
-                      </Button>
-                    </div>
-                  </DrawerFooter>
-                </>
-              )}
+                        <div className="absolute flex px-1 py-0.5 justify-start items-center inset-0">
+                          <div className="w-[0%] group-hover:w-full transition-all duration-[1s] ease-[cubic-bezier(0.510,0.026,0.368,1.016)]" />
+                          <div className="rounded-full shrink-0 flex justify-center items-center shadow-[inset_1px_-1px_3px_0_black] h-full aspect-square bg-purple-900 transition-all duration-[1s] ease-[cubic-bezier(0.510,0.026,0.368,1.016)] group-hover:bg-black">
+                            <div className="size-[0.8rem] text-black group-hover:text-white group-hover:-rotate-45 transition-all duration-[1s] ease-[cubic-bezier(0.510,0.026,0.368,1.016)]">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 16 16"
+                                height="100%"
+                                width="100%"
+                              >
+                                <path
+                                  fill="currentColor"
+                                  d="M12.175 9H0V7H12.175L6.575 1.4L8 0L16 8L8 16L6.575 14.6L12.175 9Z"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="pl-[3.4rem] pr-[1.1rem] group-hover:pl-[1.1rem] group-hover:pr-[3.4rem] transition-all duration-[1s] ease-[cubic-bezier(0.510,0.026,0.368,1.016)] group-hover:text-black text-white text-medium tracking-widest">
+                          𝐂𝐡𝐞𝐜𝐤 𝐎𝐮𝐭
+                        </div>
+                      </button>
+
+                      {/* Footer Buttons */}
+                      <div className="flex w-full justify-end gap-3">
+                        <Button
+                          color="danger"
+                          variant="light"
+                          onPress={onClose}
+                        >
+                          Close
+                        </Button>
+                        <Button
+                          color="danger"
+                          onPress={() => dispatch(clearCart())}
+                        >
+                          Clear All
+                        </Button>
+                      </div>
+                    </DrawerFooter>
+                  </>
+                );
+              }}
             </DrawerContent>
           </Drawer>
         </div>

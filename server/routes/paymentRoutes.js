@@ -1,63 +1,21 @@
-// const express = require("express");
-// const router = express.Router();
-// const Stripe = require("stripe");
-// const stripe = Stripe(process.env.STRIPE_SECRET_KEY); // .env ფაილიდან
-
-// router.post("/create-checkout-session", async (req, res) => {
-//   const { cartItems } = req.body;
-
-//   const line_items = cartItems.map((item) => ({
-//     price_data: {
-//       currency: "usd",
-//       product_data: {
-//         name: item.name,
-//         images: [item.image], // სურათი ჩანს Stripe checkout-ზე
-//       },
-//       unit_amount: Math.round(parseFloat(item.price.replace("$", "")) * 100), // სენტებში
-//     },
-//     quantity: item.quantity,
-//   }));
-
-//   try {
-//     const session = await stripe.checkout.sessions.create({
-//       payment_method_types: ["card"],
-//       mode: "payment",
-//       line_items,
-//       success_url: "http://localhost:3000/success", // ✅ შეცვალე
-//       cancel_url: "http://localhost:3000/cancel", // ✅ შეცვალე
-//     });
-
-//     res.json({ url: session.url }); // 👉 frontend-ზე გადამისამართებისთვის
-//   } catch (error) {
-//     console.error("Stripe შეცდომა:", error);
-//     res.status(500).json({ error: error.message });
-//   }
-// });
-
-// module.exports = router;
 const express = require("express");
 const router = express.Router();
 const paypal = require("@paypal/checkout-server-sdk");
 const Order = require("../Models/Order");
 const sendEmail = require("../utils/sendEmail");
+const buildOrderEmail = require("../utils/buildOrderEmail");
 const {
   createPrintfulOrder,
   buildPrintfulOrderData,
 } = require("../utils/printful");
 
-// PayPal კონფიგურაცია
-const Environment =
-  process.env.PAYPAL_MODE === "live"
-    ? paypal.core.LiveEnvironment
-    : paypal.core.SandboxEnvironment;
-
+// ყოველთვის Live PayPal კონფიგურაცია
 const paypalClient = new paypal.core.PayPalHttpClient(
-  new Environment(
+  new paypal.core.LiveEnvironment(
     process.env.PAYPAL_CLIENT_ID,
     process.env.PAYPAL_CLIENT_SECRET
   )
 );
-
 // 1) PayPal შეკვეთის შექმნა
 router.post("/create-paypal-order", async (req, res) => {
   const { cartItems, totalAmount: clientTotal } = req.body;
@@ -103,13 +61,22 @@ router.post("/create-paypal-order", async (req, res) => {
 });
 
 // 2) PayPal გადახდის დადასტურება და Printful შეკვეთის შექმნა
-router.post("/paypal/confirm", async (req, res) => {
+router.post("/confirm", async (req, res) => {
   const { userData, cartItems } = req.body;
+
+  console.log("🟡 Received confirmation request");
   console.log("User Data:", userData);
   console.log("Cart Items:", cartItems);
+  // // ⛔️ ვალიდაცია სანამ printful-ში გაგზავნით
+
   try {
     // 🔹1. შეკვეთის Printful-ის ფორმატში ჩამოყალიბება
     const orderData = buildPrintfulOrderData(userData, cartItems);
+    console.log(
+      "Prepared Printful Order Data:",
+      JSON.stringify(orderData, null, 2)
+    );
+
     // 🔹2. Printful-ზე გაგზავნა
     const printfulResponse = await createPrintfulOrder(orderData);
     // 🔹3. მთლიანი თანხის დათვლა
@@ -120,31 +87,57 @@ router.post("/paypal/confirm", async (req, res) => {
         0
       )
       .toFixed(2);
+    //Email ის გაგზავნა
+    const orderDetails = cartItems
+      .map((item) => `${item.name} (x${item.quantity})`)
+      .join("<br/>"); // <br/> რათა ელფოსტაში ლამაზად ჩამოილაგოს
+
+    const message = `
+     Thank you for your order! Here are the items you purchased:
+      <br/><br/>
+    ${orderDetails}
+    <br/><br/>
+     Total: $${totalAmount}
+      `;
+    const html = buildOrderEmail(`${userData.name}`, message);
+    await sendEmail({
+      to: userData.email,
+      subject: "Your order confirmation",
+      html,
+    });
     // 🔹4. MongoDB-ში Order-ის შენახვა
     const newOrder = new Order({
       user: userData,
       items: cartItems,
       total: totalAmount,
+      createdAt: new Date(),
     });
     await newOrder.save();
-    // ✅ EmailJS გაგზავნა
-    const emailParams = {
-      to_name: userData.name,
-      to_email: userData.email,
-      message: `Your order of $${totalAmount} has been placed successfully. Items: ${cartItems
-        .map((item) => `${item.name} (x${item.quantity})`)
-        .join(", ")}`,
-    };
-    await sendEmail(emailParams);
+
     // 🔹5. წარმატება
     console.log("Printful Order Created:", printfulResponse);
     res
       .status(200)
       .json({ message: "Order placed with Printful successfully." });
   } catch (error) {
-    console.error("Printful Error:", error.message);
-    res.status(500).json({ error: "Failed to create Printful order" });
+    console.error("❌ Error in /paypal/confirm:", error.message);
+
+    if (error.response) {
+      console.error("❌ Printful Response Status:", error.response.status);
+      console.error("❌ Printful Error Data:", error.response.data);
+    } else {
+      console.error("❌ General Error:", error);
+    }
+
+    const errMsg =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to create Printful order";
+
+    res.status(500).json({ error: errMsg });
   }
 });
 
 module.exports = router;
+// return_url: "https://ferraritifo.live/success",
+// cancel_url: "https://ferraritifo.live/cancel",
