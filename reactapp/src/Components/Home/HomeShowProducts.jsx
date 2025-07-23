@@ -21,7 +21,7 @@ export const HomeShowProducts = () => {
 
   return (
     <div className="flex justify-center ">
-      <div className=" grid grid-cols-2 mmd:grid-cols-3 gap-y-20 gap-4   ssm:gap-10 xl:grid-cols-4 xl:gap-10 xxl:gap-20 ">
+      <div className=" grid grid-cols-1 ssm:grid-cols-2 mmd:grid-cols-3 gap-y-20 gap-4   ssm:gap-10 xl:grid-cols-4 xl:gap-10 xxl:gap-20 ">
         {isLoading
           ? // გაჩვენებს 8 loader-ს სანამ ჩაიტვირთება
             Array.from({ length: 8 }).map((_, index) => <Puls key={index} />)

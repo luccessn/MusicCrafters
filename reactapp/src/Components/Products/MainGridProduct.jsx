@@ -45,8 +45,9 @@ const MainGridProduct = ({ props }) => {
       {props.images?.img1 ? (
         <div
           onClick={goDTL}
-          className=" w-[160px] h-[230px] ssmm:w-[190px] ssmm:h-[260px] ssm:w-[220px] ssm:h-[290px] sfm:w-[260px] sfm:h-[330px] smm:w-[280px] smm:h-[350px]  sm:w-[340px] sm:h-[400px] xxxl:w-[380px] xxxl:h-[500px] flex flex-col rounded-xl relative shadow hover:shadow-md transition"
+          className=" w-[260px]   h-[320px] mt-10 mmd:m-0  ssmm:w-[300px] ssmm:h-[360px] ssm:w-[220px] ssm:h-[290px] sfm:w-[260px] sfm:h-[330px] smm:w-[280px] smm:h-[350px]  sm:w-[340px] sm:h-[400px] xxxl:w-[380px] xxxl:h-[500px] flex flex-col rounded-xl relative shadow hover:shadow-md transition"
         >
+          {/* ssmm:w-[190px] ssmm:h-[260px]  */}
           <div className="w-full h-[380px] overflow-hidden rounded-sm">
             <img
               src={image}

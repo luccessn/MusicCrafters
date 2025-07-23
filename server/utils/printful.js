@@ -7,7 +7,7 @@ const printfulAPI = axios.create({
   },
 });
 // //ვალიდაცია
-
+console.log("Printful API KEY:", process.env.PRINTFUL_API_KEY);
 // module.exports = printfulAPI;
 const createPrintfulOrder = async (orderData) => {
   try {

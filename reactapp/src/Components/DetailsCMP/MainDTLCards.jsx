@@ -257,14 +257,16 @@ const MainDTLCards = ({ data }) => {
                     </div>
                   </div>
 
-                  <div>
-                    <h1 className="text-gray-300 text-xl">Choose your size:</h1>
-                    <div className="grid grid-cols-4 gap-4">
+                  <div className="flex flex-col gap-5">
+                    <h1 className="text-gray-300 text-xl">
+                      Choose your type :
+                    </h1>
+                    {/* <div className="grid grid-cols-4 gap-4 gap-x-10">
                       {availableSizes.map((size) => (
                         <button
                           key={size}
                           onClick={() => setSelectedSize(size)}
-                          className={`text-medium w-20 h-10 rounded ${
+                          className={`text-medium w-20  h-14 rounded ${
                             selectedSize === size
                               ? "bg-gray-200 text-black"
                               : "bg-black text-white border border-gray-500"
@@ -273,6 +275,26 @@ const MainDTLCards = ({ data }) => {
                           {size}
                         </button>
                       ))}
+                    </div> */}
+                    <div className="w-64">
+                      <select
+                        value={selectedSize}
+                        onChange={(e) => setSelectedSize(e.target.value)}
+                        className="w-full h-14 text-medium rounded bg-black text-white border border-gray-500 px-4"
+                      >
+                        <option value="" disabled>
+                          აირჩიე ზომა
+                        </option>
+                        {availableSizes.map((size) => (
+                          <option
+                            key={size}
+                            value={size}
+                            className="text-black"
+                          >
+                            {size}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   </div>
 

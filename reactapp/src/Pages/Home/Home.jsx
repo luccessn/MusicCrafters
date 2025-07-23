@@ -15,7 +15,7 @@ import Flamer from "../../Components/Home/LoadersHM/Flamer";
 import Aurora from "../../Components/Ui/Aura";
 import { SaleSlide } from "../../Components/Home/SaleSlide";
 // import { SaleSlide } from "../../Components/Home/SaleSlide";
-const BackgroundDesign = [Ghost, Ghost, Flamer, Flamer, Ghost, Flamer];
+// const BackgroundDesign = [Ghost, Ghost, Flamer, Flamer, Ghost, Flamer];
 export const Home = () => {
   // const { state } = useAppContext();
   //cart test
@@ -47,11 +47,35 @@ export const Home = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
+      {/* <div className="absolute inset-0 z-0 pointer-events-none">
+        {BackgroundDesign.map((Component, index) => {
+          // წინასწარ განსაზღვრული პოზიციები (მაგალითად)
+          const positions = [
+            { top: "70%", right: "45%" },
+            { top: "45%", right: "0%" },
+            { top: "80%", right: "2%" },
+            { top: "30%", right: "15%" },
+            { top: "90%", left: "2%" },
+            { top: "50%", left: "20%" },
+          ];
+          const style = {
+            position: "absolute",
+            ...positions[index % positions.length],
+            opacity: 0.5,
+          };
+
+          return (
+            <div key={index} style={style}>
+              <Component />
+            </div>
+          );
+        })}
+      </div> */}
       <SaleSlide />
-      <div className="flex flex-col ">
+      <div className="flex flex-col min-h-screen ">
         <div className="flex-grow">
           <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
-            <div className="flex flex-row gap-20">
+            <div className=" hidden  mmd:flex  flex-row gap-20">
               <div className="relative top-20 -z-10 opacity-40 mmd:opacity-100">
                 <Ghost />
               </div>
@@ -59,7 +83,7 @@ export const Home = () => {
                 <img
                   src={musicWeb}
                   alt="music visual"
-                  className="hidden  mmd:block w-[900px] max-w-full rounded-full contrast-125 hue-rotate-[-35deg] saturate-50 z-10"
+                  className=" w-[900px] max-w-full rounded-full contrast-125 hue-rotate-[-35deg] saturate-50 z-10"
                 />
               </div>
               <div className=" relative top-96 -z-10 opacity-40 mmd:opacity-100">
@@ -71,30 +95,6 @@ export const Home = () => {
 
           <div className="relative top-0 mmd:-top-40 z-10">
             {/* Background elements */}
-            <div className="absolute inset-0 z-0 pointer-events-none">
-              {BackgroundDesign.map((Component, index) => {
-                // წინასწარ განსაზღვრული პოზიციები (მაგალითად)
-                const positions = [
-                  { top: "40%", left: "20%" },
-                  { top: "35%", right: "0%" },
-                  { top: "80%", left: "0%" },
-                  { top: "95%", right: "5%" },
-                  { top: "100%", right: "60%" },
-                  { top: "55%", right: "35%" },
-                ];
-                const style = {
-                  position: "absolute",
-                  ...positions[index % positions.length],
-                  opacity: 0.5,
-                };
-
-                return (
-                  <div key={index} style={style}>
-                    <Component />
-                  </div>
-                );
-              })}
-            </div>
 
             {/* Foreground products */}
             <div className="relative z-10">
