@@ -13,7 +13,7 @@ import Ghost from "../../Components/Home/LoadersHM/Ghost";
 import Flamer from "../../Components/Home/LoadersHM/Flamer";
 
 import Aurora from "../../Components/Ui/Aura";
-import { SaleSlide } from "../../Components/Home/SaleSlide";
+// import { SaleSlide } from "../../Components/Home/SaleSlide";
 // import { SaleSlide } from "../../Components/Home/SaleSlide";
 // const BackgroundDesign = [Ghost, Ghost, Flamer, Flamer, Ghost, Flamer];
 export const Home = () => {
@@ -71,7 +71,7 @@ export const Home = () => {
           );
         })}
       </div> */}
-      <SaleSlide />
+      {/* <SaleSlide /> */}
       <div className="flex flex-col min-h-screen ">
         <div className="flex-grow">
           <div className="flex flex-col md:flex-row gap-8 items-center justify-center">

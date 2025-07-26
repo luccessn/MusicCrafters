@@ -3,18 +3,18 @@
 /* eslint-disable prettier/prettier */
 import React from "react";
 import useFetchData from "../../HOC/useFetchData";
-import MainGridProduct from "../Products/MainGridProduct";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
 import "swiper/css/pagination";
 import { Autoplay } from "swiper/modules";
 import Puls from "../Loaderings/Puls";
+import { SwiperCard } from "./SwiperCard";
 
 const MainDTLCard = () => {
   //case ის
   const [data, error, isLoading] = useFetchData(
-    "http://localhost:3001/server/api/printful/get"
+    "https://musicrafters.store/server/api/printful/get"
   );
 
   if (error) {
@@ -22,7 +22,7 @@ const MainDTLCard = () => {
   }
   return (
     <div>
-      <div className=" w-[400px] ssm:w-[550px] sfm:w-[650px] sm:w-[750px] md:w-[900px] mmd:w-[1100px]  xl:w-[1400px] xxl:w-[1500px] xxxl:w-[1800px] h-[500px] relative left-3 ">
+      <div className=" w-[600px] ssmm:w-[450px]  ssm:w-[550px] sfm:w-[550px] smm:w-[650px] sm:w-[750px] md:w-[900px] mmd:w-[1000px] lg:w-[1100px]  xl:w-[1400px] xxl:w-[1500px] xxxl:w-[1800px] h-[500px] relative left-3 ">
         <Swiper
           spaceBetween={30}
           modules={[Autoplay]}
@@ -33,6 +33,9 @@ const MainDTLCard = () => {
           }}
           breakpoints={{
             0: {
+              slidesPerView: 1,
+            },
+            410: {
               slidesPerView: 2,
             },
             640: {
@@ -51,7 +54,9 @@ const MainDTLCard = () => {
               Array.from({ length: 4 }).map((_, index) => <Puls key={index} />)
             : data.map((item) => (
                 <SwiperSlide key={item._id}>
-                  <MainGridProduct key={item._id} props={item} />
+                  <div className="relative left-40  ssmm:left-0">
+                    <SwiperCard key={item._id} props={item} />
+                  </div>
                 </SwiperSlide>
               ))}
         </Swiper>

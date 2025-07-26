@@ -14,9 +14,9 @@ echo "🔧 Building app..."
 npm run build
 
 echo "🚀 Deploying files to server..."
-scp -r build/. luk@45.66.11.41:/var/www/ferraritifo.live/
+scp -r build/. luk@62.233.53.70:/var/www/musicrafters.store/
 
 echo "🔁 Restarting Nginx..."
-ssh luk@45.66.11.41 "sudo systemctl restart nginx"
+ssh luk@62.233.53.70 "sudo systemctl restart nginx"
 
 echo "✅ Done!"

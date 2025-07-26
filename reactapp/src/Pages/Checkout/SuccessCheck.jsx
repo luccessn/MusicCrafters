@@ -16,7 +16,7 @@ const SuccessCheck = () => {
     const updateStock = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3001/server/api/stock/update-stock",
+          "https://musicrafters.store/server/api/stock/update-stock",
           {
             method: "PATCH",
             headers: {

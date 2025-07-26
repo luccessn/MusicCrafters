@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-"use client";
 import { cn } from "../../../Lib/utils";
 import React, { useEffect, useState, useRef } from "react";
 

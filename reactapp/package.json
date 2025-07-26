@@ -62,6 +62,7 @@
       "react-app/jest"
     ]
   },
+  "proxy": "https://musicrafters.store",
   "browserslist": {
     "production": [
       ">0.2%",

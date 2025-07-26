@@ -225,7 +225,7 @@ const CheckOuts = () => {
                 name="country"
                 value={Data.country}
                 onChange={ChangeInput}
-                className="w-full bg-[#1b1b1b] text-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
+                className="w-full  bg-[#1b1b1b] text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
               >
                 <option value="">Select a country</option>
                 <option value="US">United States</option>
@@ -255,7 +255,7 @@ const CheckOuts = () => {
                   name="state"
                   value={Data.state}
                   onChange={ChangeInput}
-                  className="w-full bg-[#1b1b1b] p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
+                  className="w-full bg-[#1b1b1b] p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-950"
                 >
                   <option value="">Select a state</option>
                   {usStates.map((state) => (
@@ -432,7 +432,7 @@ const CheckOuts = () => {
               forceReRender={[totalAmount]}
               createOrder={async () => {
                 const response = await fetch(
-                  "http://localhost:3001/server/api/paypal/create-paypal-order",
+                  "/server/api/paypal/create-paypal-order",
                   {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -462,18 +462,15 @@ const CheckOuts = () => {
 
                   // ახლა **არ ჩავიტარო აქ capture!**
                   // უბრალოდ ვუგზავნით სერვერს orderId-ს და სხვა მონაცემებს
-                  const response = await fetch(
-                    "http://localhost:3001/server/api/paypal/confirm",
-                    {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({
-                        userData,
-                        cartItems,
-                        orderId: data.orderID,
-                      }),
-                    }
-                  );
+                  const response = await fetch("/server/api/paypal/confirm", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      userData,
+                      cartItems,
+                      orderId: data.orderID,
+                    }),
+                  });
 
                   const result = await response.json();
                   if (!response.ok)
