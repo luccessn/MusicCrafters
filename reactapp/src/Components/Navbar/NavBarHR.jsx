@@ -38,18 +38,10 @@ const NavBarHR = () => {
   const smMenu = [
     { title: "Home", path: routes.home },
     { title: "AboutUs", path: routes.aboutus },
-
-    // { title: "Tshirts", path: routes.tshirt },
-    // { title: "Hood", path: routes.hood },
-    // { title: "Case`s", path: routes.case },
   ];
   return (
     <div className="relative z-50">
-      {/* Top Banner */}
-
-      {/* Navbar */}
       <nav className="flex items-center justify-between px-6 py-4 ">
-        {/* Menu Icon */}
         <motion.button
           onClick={() => setIsOpen(!Open)}
           className="transition-transform duration-200"
@@ -141,7 +133,6 @@ const NavBarHR = () => {
                     </DrawerBody>
 
                     <DrawerFooter className="bg-zinc-800 flex flex-col gap-3">
-                      {/* Total price calculation */}
                       <div className="w-full text-white text-xl font-mono flex justify-between px-2">
                         <span>Estimated total :</span>
                         <span>
@@ -157,7 +148,6 @@ const NavBarHR = () => {
                         </span>
                       </div>
 
-                      {/* ✅ Check Out Button */}
                       <button
                         onClick={handleCheckout}
                         className="cursor-pointer relative bg-white/10 py-2 rounded-full min-w-[8.5rem] min-h-[2.92rem] group max-w-full flex items-center justify-start hover:bg-purple-950 transition-all duration-[0.8s] ease-[cubic-bezier(0.510,0.026,0.368,1.016)] shadow-[inset_1px_2px_5px_#00000080]"
@@ -211,7 +201,6 @@ const NavBarHR = () => {
         </div>
       </nav>
 
-      {/* AnimatePresence for sidebar + overlay */}
       <AnimatePresence>
         {Open && (
           <>
@@ -257,9 +246,6 @@ const NavBarHR = () => {
           </>
         )}
       </AnimatePresence>
-      {/* <div className="bg-black text-white text-center py-2 text-sm">
-        FREE SHIPPING FOR ORDERS OVER $65
-      </div> */}
     </div>
   );
 };

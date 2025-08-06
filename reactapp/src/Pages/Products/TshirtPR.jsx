@@ -4,9 +4,7 @@ import useFetchData from "../../HOC/useFetchData";
 import MainGridProduct from "../../Components/Products/MainGridProduct";
 
 const TshirtPR = () => {
-  const [data, error, isLoading] = useFetchData(
-    "http://localhost:3001/getPrintfulDesigns"
-  );
+  const [data, error, isLoading] = useFetchData();
   if (error) {
     return <h1>err:{error}</h1>;
   }

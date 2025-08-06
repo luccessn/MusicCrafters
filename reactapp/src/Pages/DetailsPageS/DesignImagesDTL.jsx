@@ -26,4 +26,3 @@ const DesignImagesDTL = () => {
 };
 
 export default DesignImagesDTL;
-// `https://ferraritifo.live/server/api/printful/get?id=${prID}`

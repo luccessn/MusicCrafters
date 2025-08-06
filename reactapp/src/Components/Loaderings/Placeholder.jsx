@@ -42,14 +42,12 @@ const Placeholder = () => {
           <div className="w-8 h-8 bg-gray-300 rounded" />
         </div>
 
-        {/* Sizes */}
         <div className="flex flex-wrap gap-2 mb-6">
           {[...Array(7)].map((_, i) => (
             <div key={i} className="w-12 h-8 bg-gray-300 rounded" />
           ))}
         </div>
 
-        {/* Quantity control */}
         <div className="h-4 bg-gray-300 rounded w-1/3 mb-4" />
         <div className="flex gap-4 mb-6">
           <div className="w-8 h-8 bg-gray-300 rounded" />
@@ -57,7 +55,6 @@ const Placeholder = () => {
           <div className="w-8 h-8 bg-gray-300 rounded" />
         </div>
 
-        {/* Add to Cart / Buy buttons */}
         <div className="w-full flex flex-row gap-5">
           <div className="h-10 bg-red-400 rounded w-full" />
           <div className="h-10 bg-purple-400 rounded w-full" />

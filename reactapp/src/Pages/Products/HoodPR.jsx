@@ -4,9 +4,7 @@ import useFetchData from "../../HOC/useFetchData";
 import MainGridProduct from "../../Components/Products/MainGridProduct";
 
 const HoodPR = () => {
-  const [data, error, isLoading] = useFetchData(
-    "http://localhost:3001/gethoodImages"
-  );
+  const [data, error, isLoading] = useFetchData();
   if (error) {
     return <h1>err:{error}</h1>;
   }

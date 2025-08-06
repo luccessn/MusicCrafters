@@ -5,7 +5,6 @@ import AppRoutes from "./AppRoutes";
 import NavBarHR from "./Components/Navbar/NavBarHR";
 import { ShootingStars } from "./Components/Ui/stars/shooting-stars";
 import { StarsBackground } from "./Components/Ui/stars/stars-background";
-// import { Navbar } from "./Components/Navbar/Navbar";
 
 function App() {
   return (
@@ -26,5 +25,3 @@ function App() {
 }
 
 export default App;
-//  <StarsBackground className="z-0" />
-//   <ShootingStars className="z-0" />

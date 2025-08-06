@@ -100,7 +100,7 @@ const MainDTLCards = ({ data }) => {
     if (!variant) return alert("ვარიანტი ვერ მოიძებნა");
     const itemToAdd = {
       id: `${data._id}-${selectedSize}-${selectedColor.color_code}`,
-      sync_variant_id: variant.sync_variant_id, // ← სწორი ველი
+      sync_variant_id: variant.sync_variant_id,
       variantId: variant.variant_id,
       printfulProductId: data.printfulProductId,
       name: data.name,

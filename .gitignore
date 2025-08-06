@@ -6,3 +6,4 @@ reactapp/node_modules/
 # Env ფაილი — მნიშვნელოვანია!
 server/.env
 
+deploy.sh

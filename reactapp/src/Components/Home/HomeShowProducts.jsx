@@ -2,8 +2,6 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable prettier/prettier */
 import React from "react";
-// import { homeProducts } from "../../Constants/Database/HomeProducts";
-// import { HomeProduct } from "./HomeProduct";
 import useFetchData from "../../HOC/useFetchData";
 import MainGridProduct from "../Products/MainGridProduct";
 import Puls from "../Loaderings/Puls";
@@ -33,4 +31,3 @@ export const HomeShowProducts = () => {
   );
 };
 // http://localhost:3001/
-// "https://ferraritifo.live/server/api/printful/get"

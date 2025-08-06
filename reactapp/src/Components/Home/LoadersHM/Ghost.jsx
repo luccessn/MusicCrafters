@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from "react";
-import "./CSS/ghost.css"; // Tailwind-სთან ერთად შეიძლება ჩვეულებრივი css გამოიყენო ან Tailwind-ის animation-extend
+import "./CSS/ghost.css";
 
 const Ghost = () => {
   return (

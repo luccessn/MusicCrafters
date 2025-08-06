@@ -47,29 +47,3 @@ export const useAppContext = () => {
 };
 
 export default AppContextReducer;
-
-// // localStorage-დან cartItems ამოღება
-// const getInitialState = () => {
-//   const localData = localStorage.getItem("cartItems");
-//   return {
-//     ...initials,
-//     cartItems: localData ? JSON.parse(localData) : [],
-//   };
-// };
-
-// const AppContext = createContext();
-
-// const AppContextReducer = ({ children }) => {
-//   const [state, dispatch] = useReducer(reducer, getInitialState());
-
-//   // როცა cartItems იცვლება, შევინახოთ localStorage-ში
-//   useEffect(() => {
-//     localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
-//   }, [state.cartItems]);
-
-//   return (
-//     <AppContext.Provider value={{ state, dispatch }}>
-//       {children}
-//     </AppContext.Provider>
-//   );
-// };

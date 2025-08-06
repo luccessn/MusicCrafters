@@ -7,10 +7,6 @@ import { routesConfig } from "./Config/routesConfig";
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* <Route path="/" Component={Home} />
-      <Route path="/signin" Component={SignIn} />
-      <Route path="/signup" Component={SignUp} />
-      <Route path="/test" Component={testpage} /> */}
       {routesConfig.map((route, index) => {
         const key = route.path || `route-${index}`;
         // if (route.Guard) {

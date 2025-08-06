@@ -16,7 +16,7 @@ const Puls = () => {
           strokeLinejoin="round"
           strokeWidth="2"
           fill="none"
-          stroke="#6A0DAD" // <== აქ შეიცვალა ფერი
+          stroke="#6A0DAD"
         />
       </svg>
     </div>

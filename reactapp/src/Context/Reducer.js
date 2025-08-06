@@ -30,12 +30,10 @@ const reducer = (state, action) => {
       );
 
       if (existingIndex !== -1) {
-        // თუ უკვე არსებობს იგივე ზომის და იგივე ID-ს პროდუქტი -> განვაახლოთ რაოდენობა
         const updatedCartItems = [...state.cartItems];
         updatedCartItems[existingIndex].quantity += payload.quantity;
         return { ...state, cartItems: updatedCartItems };
       } else {
-        // არ არსებობს -> დავამატოთ ახალი
         return { ...state, cartItems: [...state.cartItems, payload] };
       }
     }
@@ -56,7 +54,7 @@ const reducer = (state, action) => {
     case DECREMENT:
       return {
         ...state,
-        counter: Math.max(1, state.counter - payload), // არ დავუშვათ 1-ზე ნაკლები
+        counter: Math.max(1, state.counter - payload),
       };
     case RESET_COUNTER:
       return {
@@ -78,31 +76,3 @@ const reducer = (state, action) => {
 };
 
 export { initials, reducer };
-// switch (type) {
-//   case AppActions.AUTHENTICATED: {
-//     const user = jwtDecode(payload);
-//     return { ...state, isAuthanticated: true, user: user };
-//   }
-//   case AppActions.LOG_IN: {
-//     const { token } = payload;
-//     const user = jwtDecode(token);
-//     toggleLocalStorage(token);
-//     return { ...state, isAuthanticated: true, user };
-//   }
-//   case AppActions.LOG_OUT:
-//     toggleLocalStorage();
-//     return { ...state, isAuthanticated: false, user: null };
-//   default:
-//     return state;
-// }
-
-//cart
-// case AppActions.UPDATE_CART_ITEM_QUANTITY:
-//       return {
-//         ...state,
-//         cartItems: state.cartItems.map((item) =>
-//           item.id === payload.id
-//             ? { ...item, quantity: payload.quantity }
-//             : item
-//         ),
-//       };

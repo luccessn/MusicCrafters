@@ -558,6 +558,3 @@ const CheckOuts = () => {
 };
 
 export default CheckOuts;
-// "https://ferraritifo.live/server/api/paypal/create-paypal-order",
-// "https://ferraritifo.live/server/api/paypal/confirm",
-// contactshopmusic@gmail.com
