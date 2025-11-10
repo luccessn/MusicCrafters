@@ -39,6 +39,8 @@ const NavBarHR = () => {
     { title: "Home", path: routes.home },
     { title: "AboutUs", path: routes.aboutus },
   ];
+  console.log(state.cartItems);
+
   return (
     <div className="relative z-50">
       <nav className="flex items-center justify-between px-6 py-4 ">

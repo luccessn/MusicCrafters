@@ -1,14 +1,16 @@
 /* eslint-disable prettier/prettier */
 import React, { createContext, useContext, useEffect, useReducer } from "react";
 import { initials, reducer } from "./Reducer";
-// 🔐 ვღებულობთ და ვშიფრავთ token-ად
+
+// --- ვღებულობთ და ვშიფრავთ token-ად ---
 const getInitialState = () => {
-  const token = localStorage.getItem("cartToken");
+  const token = localStorage.getItem("MCcartToken");
   let cartItems = [];
+
   if (token) {
     try {
-      const decoded = atob(token); // Base64 decode
-      cartItems = JSON.parse(decoded); // parse JSON
+      const decoded = decodeURIComponent(token); // ✅ ვშიფრავთ URL-encoded სტრიქონს
+      cartItems = JSON.parse(decoded); // ✅ JSON parse
     } catch (err) {
       console.error("Failed to decode cart token:", err);
     }
@@ -21,16 +23,19 @@ const getInitialState = () => {
 };
 
 const AppContext = createContext();
+
 const AppContextReducer = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initials, getInitialState);
+  const [state, dispatch] = useReducer(reducer, getInitialState());
+
   useEffect(() => {
     try {
-      const token = btoa(JSON.stringify(state.cartItems)); // encode as Base64
-      localStorage.setItem("cartToken", token);
+      const token = encodeURIComponent(JSON.stringify(state.cartItems)); // ✅ ვინახავთ სწორად
+      localStorage.setItem("MCcartToken", token);
     } catch (err) {
       console.error("Failed to encode cart items:", err);
     }
   }, [state.cartItems]);
+
   return (
     <AppContext.Provider value={{ state, dispatch }}>
       {children}
@@ -40,10 +45,10 @@ const AppContextReducer = ({ children }) => {
 
 export const useAppContext = () => {
   const context = useContext(AppContext);
-  if (context) {
-    return context;
+  if (!context) {
+    throw new Error("AppContext Error");
   }
-  throw new Error("AppContex Error");
+  return context;
 };
 
 export default AppContextReducer;

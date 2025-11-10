@@ -44,8 +44,8 @@ router.post("/create-paypal-order", async (req, res) => {
       },
     ],
     application_context: {
-      return_url: "https://musicrafters.store/success",
-      cancel_url: "https://musicrafters.store/cancel",
+      return_url: "http://localhost:3000/success",
+      cancel_url: "http://localhost:3000/cancel",
       shipping_preference: "NO_SHIPPING",
       user_action: "PAY_NOW",
     },

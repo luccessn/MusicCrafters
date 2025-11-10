@@ -71,7 +71,7 @@ const CheckOuts = () => {
   );
 
   const totalAmount = isPromoApplied
-    ? (nedliTotal * 0.01).toFixed(2)
+    ? (nedliTotal * 0.001).toFixed(2)
     : nedliTotal.toFixed(2);
   function validateZip(zip, stateCode, country) {
     if (country !== "US") {
@@ -417,7 +417,7 @@ const CheckOuts = () => {
           <PayPalScriptProvider
             options={{
               "client-id":
-                "AetgjvMYYTYAViEmx43ac-24iDY0BbA0TkwXH6yplb71oLQbAdyUBqJaiiVZx06NkSaiwZNPLbQIoaLq",
+                "Ad_KrOvS2FrNBEQS_n5VOVS-AJjQEQE5J_xe-klPMosTOCZQS2G4tYS4gq1D35NCdNm6KGWOwurRHnCl",
               currency: "USD",
             }}
           >
@@ -432,7 +432,7 @@ const CheckOuts = () => {
               forceReRender={[totalAmount]}
               createOrder={async () => {
                 const response = await fetch(
-                  "/server/api/paypal/create-paypal-order",
+                  "http://localhost:3001/server/api/paypal/create-paypal-order",
                   {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -462,15 +462,18 @@ const CheckOuts = () => {
 
                   // ახლა **არ ჩავიტარო აქ capture!**
                   // უბრალოდ ვუგზავნით სერვერს orderId-ს და სხვა მონაცემებს
-                  const response = await fetch("/server/api/paypal/confirm", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      userData,
-                      cartItems,
-                      orderId: data.orderID,
-                    }),
-                  });
+                  const response = await fetch(
+                    "http://localhost:3001/server/api/paypal/confirm",
+                    {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        userData,
+                        cartItems,
+                        orderId: data.orderID,
+                      }),
+                    }
+                  );
 
                   const result = await response.json();
                   if (!response.ok)

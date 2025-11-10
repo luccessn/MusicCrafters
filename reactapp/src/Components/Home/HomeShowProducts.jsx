@@ -10,7 +10,7 @@ import ErrorLoader from "../Loaderings/ErrorLoader";
 export const HomeShowProducts = () => {
   const [data, error, isLoading] = useFetchData(
     // "http://localhost:3001/getcvImages"
-    "https://musicrafters.store/server/api/printful/get"
+    "http://localhost:3001/server/api/printful/get"
   );
 
   if (error) {

@@ -8,7 +8,7 @@ const DesignImagesDTL = () => {
   const { prID } = useParams();
 
   const [data, error, loading] = useFetchData(
-    `/server/api/printful/get?id=${prID}`
+    `http://localhost:3001/server/api/printful/get?id=${prID}`
   );
 
   if (error) {
