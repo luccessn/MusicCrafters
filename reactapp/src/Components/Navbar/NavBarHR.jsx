@@ -39,7 +39,6 @@ const NavBarHR = () => {
     { title: "Home", path: routes.home },
     { title: "AboutUs", path: routes.aboutus },
   ];
-  console.log(state.cartItems);
 
   return (
     <div className="relative z-50">
@@ -58,7 +57,6 @@ const NavBarHR = () => {
           )}
         </motion.button>
 
-        {/* Logo */}
         <NavLink
           to="/"
           className=" flex items-center  text-sm font-normal text-black"

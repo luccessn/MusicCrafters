@@ -97,7 +97,6 @@ const MainDTLCards = ({ data }) => {
       selectedSize,
       selectedColor.color_code
     );
-    console.log(variant);
 
     if (!variant) return alert("ვარიანტი ვერ მოიძებნა");
     const itemToAdd = {
