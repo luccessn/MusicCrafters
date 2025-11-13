@@ -12,7 +12,7 @@ const getInitialState = () => {
       const decoded = decodeURIComponent(token); // ✅ ვშიფრავთ URL-encoded სტრიქონს
       cartItems = JSON.parse(decoded); // ✅ JSON parse
     } catch (err) {
-      console.error("Failed to decode cart token:", err);
+      // console.error("Failed to decode cart token:", err);
     }
   }
 
@@ -32,7 +32,7 @@ const AppContextReducer = ({ children }) => {
       const token = encodeURIComponent(JSON.stringify(state.cartItems)); // ✅ ვინახავთ სწორად
       localStorage.setItem("MCcartToken", token);
     } catch (err) {
-      console.error("Failed to encode cart items:", err);
+      // console.error("Failed to encode cart items:", err);
     }
   }, [state.cartItems]);
 

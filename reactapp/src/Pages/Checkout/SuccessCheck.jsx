@@ -38,7 +38,7 @@ const SuccessCheck = () => {
         // stock განახლდა, ახლა კალათის გასუფთავება
         dispatch(clearCart());
       } catch (error) {
-        console.error("Error updating stock:", error);
+        // console.error("Error updating stock:", error);
         // აქ შეგიძლია გამოიყენო UI-ში შეცდომის საჩვენებლად ცვლადი ან notification
       }
     };

@@ -485,7 +485,7 @@ const CheckOuts = () => {
                   // წარმატების შემთხვევაში წაგიყვან success გვერდზე
                   window.location.href = "/success";
                 } catch (error) {
-                  console.error("Order confirmation error:", error);
+                  // console.error("Order confirmation error:", error);
                   alert(
                     error.message ||
                       "An error occurred during order confirmation."
@@ -496,7 +496,7 @@ const CheckOuts = () => {
                 window.location.href = "/cancel";
               }}
               onError={(err) => {
-                console.error("PayPal Error:", err);
+                // console.error("PayPal Error:", err);
                 alert("Payment error occurred");
               }}
             />
