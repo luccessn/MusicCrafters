@@ -432,7 +432,9 @@ const CheckOuts = () => {
               forceReRender={[totalAmount]}
               createOrder={async () => {
                 const response = await fetch(
-                  "http://localhost:3001/server/api/paypal/create-paypal-order",
+                  // "http://localhost:3001/server/api/paypal/create-paypal-order",
+                  "https://musiccrafters.onrender.com/server/api/paypal/create-paypal-order",
+
                   {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -463,7 +465,8 @@ const CheckOuts = () => {
                   // ახლა **არ ჩავიტარო აქ capture!**
                   // უბრალოდ ვუგზავნით სერვერს orderId-ს და სხვა მონაცემებს
                   const response = await fetch(
-                    "http://localhost:3001/server/api/paypal/confirm",
+                    // "http://localhost:3001/server/api/paypal/confirm",
+                    "https://musiccrafters.onrender.com/server/api/paypal/confirm",
                     {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },

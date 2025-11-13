@@ -14,7 +14,8 @@ import { SwiperCard } from "./SwiperCard";
 const MainDTLCard = () => {
   //case ის
   const [data, error, isLoading] = useFetchData(
-    "http://localhost:3001/server/api/printful/get"
+    // "http://localhost:3001/server/api/printful/get"
+    "https://musiccrafters.onrender.com/server/api/printful/get"
   );
 
   if (error) {
