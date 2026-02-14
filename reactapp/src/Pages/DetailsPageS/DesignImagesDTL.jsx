@@ -8,7 +8,7 @@ const DesignImagesDTL = () => {
   const { prID } = useParams();
 
   const [data, error, loading] = useFetchData(
-    `https://musiccrafters.onrender.com/server/api/printful/get?id=${prID}`
+    `https://musiccrafters.onrender.com/server/api/printful/get?id=${prID}`,
   );
 
   if (error) {

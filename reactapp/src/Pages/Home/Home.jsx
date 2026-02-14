@@ -23,7 +23,7 @@ export const Home = () => {
     window.open(
       "https://www.instagram.com/musicrafters/",
       "_blank",
-      "noopener,noreferrer"
+      "noopener,noreferrer",
     );
   };
   useEffect(() => {

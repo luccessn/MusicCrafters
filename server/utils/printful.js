@@ -16,7 +16,7 @@ const createPrintfulOrder = async (orderData) => {
   } catch (error) {
     console.error(
       "Printful Order Error:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw error;
   }

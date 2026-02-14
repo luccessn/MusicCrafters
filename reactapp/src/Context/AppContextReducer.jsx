@@ -9,8 +9,8 @@ const getInitialState = () => {
 
   if (token) {
     try {
-      const decoded = decodeURIComponent(token); // ✅ ვშიფრავთ URL-encoded სტრიქონს
-      cartItems = JSON.parse(decoded); // ✅ JSON parse
+      const decoded = decodeURIComponent(token); // ვშიფრავთ URL-encoded სტრიქონს
+      cartItems = JSON.parse(decoded); //  JSON parse
     } catch (err) {
       // console.error("Failed to decode cart token:", err);
     }

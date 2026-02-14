@@ -56,8 +56,5 @@ app.use("/server/api/stock", stockRoutes);
 // პორტი
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`🚀 სერვერი მუშაობს პორტზე ${PORT}`);
+  console.log(`სერვერი მუშაობს პორტზე ${PORT}`);
 });
-// http://localhost:3001/server
-// "https://ferraritifo.live/server/api/printful/sync"
-// https://ferraritifo.live/server/api/printful/sync

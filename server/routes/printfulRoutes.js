@@ -11,7 +11,7 @@ router.get("/sync", async (req, res) => {
     for (const product of products) {
       const productId = product.id;
       const productDetailsResponse = await printfulAPI.get(
-        `/store/products/${productId}`
+        `/store/products/${productId}`,
       );
       const productDetails = productDetailsResponse.data.result;
 
@@ -21,20 +21,20 @@ router.get("/sync", async (req, res) => {
       const price =
         productDetails.sync_product?.retail_price ||
         Math.min(
-          ...variants.map((v) => parseFloat(v.retail_price) || Infinity)
+          ...variants.map((v) => parseFloat(v.retail_price) || Infinity),
         );
 
       const minPrice =
         variants.length > 0
           ? Math.min(
-              ...variants.map((v) => parseFloat(v.retail_price) || Infinity)
+              ...variants.map((v) => parseFloat(v.retail_price) || Infinity),
             )
           : null;
 
       const maxPrice =
         variants.length > 0
           ? Math.max(
-              ...variants.map((v) => parseFloat(v.retail_price) || -Infinity)
+              ...variants.map((v) => parseFloat(v.retail_price) || -Infinity),
             )
           : null;
 
@@ -62,15 +62,15 @@ router.get("/sync", async (req, res) => {
           let color_code = "N/A";
           try {
             const productDetail = await printfulAPI.get(
-              `/products/${variant.product.product_id}`
+              `/products/${variant.product.product_id}`,
             );
             const detailedVariant = productDetail.data.result.variants.find(
-              (v) => v.id === variant.variant_id
+              (v) => v.id === variant.variant_id,
             );
             color_code = detailedVariant?.color_code || "N/A";
           } catch (e) {
             console.warn(
-              `Error fetching color_code for variant ${variant.variant_id}: ${e.message}`
+              `Error fetching color_code for variant ${variant.variant_id}: ${e.message}`,
             );
           }
 
@@ -84,7 +84,7 @@ router.get("/sync", async (req, res) => {
             preview_url: variant.files?.[0]?.preview_url || "",
             files: variant.files || [],
           };
-        })
+        }),
       );
       await Design.findOneAndUpdate(
         { printfulProductId: productId.toString() },
@@ -100,7 +100,7 @@ router.get("/sync", async (req, res) => {
           maxPrice,
           stock: existingDesign ? existingDesign.stock : 100,
         },
-        { upsert: true, new: true }
+        { upsert: true, new: true },
       );
     }
 

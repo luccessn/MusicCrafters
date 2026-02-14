@@ -9,19 +9,6 @@ const AppRoutes = () => {
     <Routes>
       {routesConfig.map((route, index) => {
         const key = route.path || `route-${index}`;
-        // if (route.Guard) {
-        //   return (
-        //     <Route
-        //       key={route.path}
-        //       path={route.path}
-        //       element={
-        //         <route.Guard>
-        //           <route.Component />
-        //         </route.Guard>
-        //       }
-        //     />
-        //   );
-        // }
         return (
           <Route key={key} path={route.path} Component={route.Component} />
         );
