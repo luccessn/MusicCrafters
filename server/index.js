@@ -42,7 +42,7 @@ cron.schedule("*/5 * * * *", async () => {
   console.log("Printful სინქრონიზაცია დაიწყო...");
   try {
     const response = await axios.get(
-      "http://localhost:3001/server/api/printful/sync"
+      "http://localhost:3001/server/api/printful/sync",
     );
     console.log("Printful სინქრონიზაცია წარმატებულია:", response.data.message);
   } catch (error) {
@@ -50,7 +50,7 @@ cron.schedule("*/5 * * * *", async () => {
   }
 });
 
-//
+//da
 const stockRoutes = require("./routes/stockRoutes");
 app.use("/server/api/stock", stockRoutes);
 // პორტი
