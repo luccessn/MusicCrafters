@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const paypal = require("@paypal/checkout-server-sdk");
+// const Order = require("../Models/Order");
 const Order = require("../Models/Order");
 const sendEmail = require("../utils/sendEmail");
 const buildOrderEmail = require("../utils/buildOrderEmail");
@@ -13,8 +14,8 @@ const {
 const paypalClient = new paypal.core.PayPalHttpClient(
   new paypal.core.LiveEnvironment(
     process.env.PAYPAL_CLIENT_ID,
-    process.env.PAYPAL_CLIENT_SECRET
-  )
+    process.env.PAYPAL_CLIENT_SECRET,
+  ),
 );
 //  PayPal შეკვეთის შექმნა
 router.post("/create-paypal-order", async (req, res) => {
@@ -27,7 +28,7 @@ router.post("/create-paypal-order", async (req, res) => {
         .reduce(
           (acc, item) =>
             acc + parseFloat(item.price.replace("$", "")) * item.quantity,
-          0
+          0,
         )
         .toFixed(2);
 
@@ -73,7 +74,7 @@ router.post("/confirm", async (req, res) => {
     const orderData = buildPrintfulOrderData(userData, cartItems);
     console.log(
       "Prepared Printful Order Data:",
-      JSON.stringify(orderData, null, 2)
+      JSON.stringify(orderData, null, 2),
     );
 
     // Printful-ზე გაგზავნა
@@ -83,7 +84,7 @@ router.post("/confirm", async (req, res) => {
       .reduce(
         (acc, item) =>
           acc + parseFloat(item.price.replace("$", "")) * item.quantity,
-        0
+        0,
       )
       .toFixed(2);
     //Email ის გაგზავნა
