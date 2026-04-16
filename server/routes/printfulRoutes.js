@@ -18,11 +18,11 @@ router.get("/sync", async (req, res) => {
       const name = productDetails.sync_product?.name || "უცნობი სახელი";
       const variants = productDetails.sync_variants || [];
       const files = productDetails.sync_product?.files || [];
-      const price =
-        productDetails.sync_product?.retail_price ||
-        Math.min(
-          ...variants.map((v) => parseFloat(v.retail_price) || Infinity),
-        );
+      // const price =
+      //   productDetails.sync_product?.retail_price ||
+      //   Math.min(
+      //     ...variants.map((v) => parseFloat(v.retail_price) || Infinity),
+      //   );
 
       const minPrice =
         variants.length > 0
@@ -95,7 +95,7 @@ router.get("/sync", async (req, res) => {
           // preview,
           // type: "tshirt",
           variants: preparedVariants,
-          price,
+          // price,
           minPrice,
           maxPrice,
           stock: existingDesign ? existingDesign.stock : 100,

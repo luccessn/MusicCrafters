@@ -23,7 +23,7 @@ const designSchema = new mongoose.Schema({
     },
   ],
   // type: String,
-  price: String,
+  price: { type: String, default: "0" },
   minPrice: String,
   maxPrice: String,
   stock: { type: Number, default: 0 }, // აქ დაამატე stock
